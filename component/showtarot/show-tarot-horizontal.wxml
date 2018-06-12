@@ -1,0 +1,7 @@
+<text class="iconfont icon-icon20 mean-title">{{typeTitle}}</text>
+<scroll-view scroll-x class="scroll-box">
+  <navigator class="scroll-item" wx:for="{{tarotCard}}" wx:key="{{item.id}}" url='../../pages/cardDetail/cardDetail?id={{item.name}}'>
+    <!-- <view>{{item.title}}</view> -->
+    <image src='../../image/waiteTarot/{{item.name}}.jpg' class='scroll-tarot-pic' mode='widthFix'></image>
+  </navigator>
+</scroll-view>

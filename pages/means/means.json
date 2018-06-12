@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "show-tarot-horizontal": "../../component/showtarot/show-tarot-horizontal"
+  }
+}
