@@ -1,14 +1,15 @@
 {
   "pages": [
+    "pages/createImg/createImg",
     "pages/notes/notes",
     "pages/means/means",
     "pages/test/test",
-    "pages/cardDetail/cardDetail"
+    "pages/cardDetail/cardDetail"    
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "愚人",
+    "navigationBarTitleText": "Tarot",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -29,6 +30,12 @@
       {
         "pagePath": "pages/test/test",
         "text": "test",
+        "iconPath": "image/icon/other.png",
+        "selectedIconPath": "image/icon/other.png"
+      },
+      {
+        "pagePath": "pages/createImg/createImg",
+        "text": "testImg",
         "iconPath": "image/icon/other.png",
         "selectedIconPath": "image/icon/other.png"
       }
