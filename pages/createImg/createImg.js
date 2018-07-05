@@ -45,8 +45,8 @@ Page({
       ctx.setTextAlign('center') //  位置
       ctx.setFillStyle('#000') //  颜色
       ctx.setFontSize(22) //  字号
-      ctx.fillText('分享文字描述', 545 / 2, 130) //  内容  不会自己换行 需手动换行
-      ctx.fillText('分享文字描述', 545 / 2, 160) //  内容
+      ctx.fillText('描述1', 545 / 2, 130) //  内容  不会自己换行 需手动换行
+      ctx.fillText('描述2', 545 / 2, 160) //  内容
 
       /* 绘制 */
       ctx.stroke()

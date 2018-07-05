@@ -1,10 +1,12 @@
 {
   "pages": [
+    "pages/canvas/canvas",
     "pages/createImg/createImg",
     "pages/notes/notes",
     "pages/means/means",
     "pages/test/test",
-    "pages/cardDetail/cardDetail"    
+    "pages/cardDetail/cardDetail"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,6 +38,13 @@
       {
         "pagePath": "pages/createImg/createImg",
         "text": "testImg",
+        "iconPath": "image/icon/other.png",
+        "selectedIconPath": "image/icon/other.png"
+      }
+      ,
+      {
+        "pagePath": "pages/canvas/canvas",
+        "text": "canvas",
         "iconPath": "image/icon/other.png",
         "selectedIconPath": "image/icon/other.png"
       }

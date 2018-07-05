@@ -1,0 +1,9 @@
+<canvas canvas-id="myCanvas" style="margin: 5px; border:1px solid #d3d3d3;" bindtouchstart="start" bindtouchmove="move" bindtouchend="end" />
+
+<view hidden="{{hidden}}">
+  Coordinates: ({{x}}, {{y}})
+</view>
+
+<canvas canvas-id="myCanvas2" style="margin: 5px; border:1px solid #d3d3d3;"/>
+
+<canvas canvas-id="myCanvas3" style="margin: 5px; border:1px solid #d3d3d3;"/>
