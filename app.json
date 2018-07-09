@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/canvas/canvas",
     "pages/createImg/createImg",
+    "pages/canvas/canvas",
     "pages/notes/notes",
     "pages/means/means",
     "pages/test/test",
