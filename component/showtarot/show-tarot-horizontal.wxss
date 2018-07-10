@@ -1,4 +1,4 @@
-@import "../../app.wxss";
+@import "../../utils/font/font.wxss";
 
 .scroll-box {
   display: flex;
