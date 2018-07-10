@@ -5,8 +5,10 @@
     "pages/notes/notes",
     "pages/means/means",
     "pages/test/test",
-    "pages/cardDetail/cardDetail"
-    
+    "pages/cardDetail/cardDetail",
+    "pages/noteDetail/noteDetail",
+    "pages/index/index",
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "light",

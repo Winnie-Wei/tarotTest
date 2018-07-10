@@ -1,16 +1,11 @@
-var tarotData = require('../../data/tarto-list.js');
 var app = getApp()
 Page({
   data: {
-    currentTab: 0,
-    divinationNote: [],
-    clientHeight: ''
+    currentTab: 0
   },
   onLoad: function (options) {
-    this.setData({
-      divinationNote: tarotData.noteItem,
-      clientHeight: app.globalData.clientHeight - 50
-    })
+    // 页面初始化 options为页面跳转所带来的参数
+
   },
   //滑动切换
   swiperTab: function (e) {

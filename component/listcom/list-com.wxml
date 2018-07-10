@@ -1,0 +1,6 @@
+<scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}">
+  <navigator wx:for="{{noteList}}" class='note-item' wx:key="{{item.id}}" url='../../pages/noteDetail/noteDetail?id={{idKey}}{{item.id}}'>
+    <view class='note-item-c'>{{item.title}}</view>
+    <view class='note-item-t'>{{item.time}}</view>
+  </navigator> 
+</scroll-view>

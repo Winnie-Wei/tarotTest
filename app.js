@@ -31,12 +31,21 @@ App({
           })
         }
       }
+    }),
+    wx.getSystemInfo({
+      success: res => {
+        this.globalData.clientHeight = res.windowHeight
+        if (this.SystemInfoCallback) {
+          this.SystemInfoCallback(res)
+        } console.log(this.globalData)
+      }
     })
   },
   onShow: function (options) {
-    console.log('34')
+
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    clientHeight: ''
   }
 })
