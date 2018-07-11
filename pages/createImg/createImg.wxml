@@ -12,7 +12,7 @@
   <button type='primary' size='mini' bindtap='save' style='position:fixed;left:30px;'>保存分享图</button>
 </view> -->
 
-<canvas canvas-id="shuffle" style="border:1px solid red;width:370px;height:500px">
+<canvas canvas-id="shuffle" style="border:1px solid red;width:{{clientWidtht?clientWidtht+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}">
 </canvas>
 <button bindtap='init'>shuffle</button>
 
