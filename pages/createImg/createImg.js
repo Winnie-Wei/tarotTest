@@ -51,6 +51,49 @@ Page({
     }
     ctx.draw()
   },
+  share: function() {  
+    var that = this
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      width: that.data.clientWidtht,
+      height: that.data.clientHeight,
+      destWidth: that.data.clientWidtht,
+      destHeight: that.data.clientHeight,
+      canvasId: 'shuffle',
+      success: function(res) {
+        console.log(res.tempFilePath);
+        that.setData({
+          prurl: res.tempFilePath })
+      },
+      fail: function(res) {
+        console.log(res)
+      }
+    })
+  },
+  save: function() {
+    var that = this
+    wx.saveImageToPhotosAlbum({
+      filePath: that.data.prurl,
+      success(res) {
+        wx.showModal({
+          content: '图片已保存到相册，赶紧晒一下吧~',
+          showCancel: false,
+          confirmText: '好的',
+          confirmColor: '#333',
+          success: function(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              /* 该隐藏的隐藏 */
+              that.setData({
+                hidden: true
+              })
+            }
+          }
+        })
+      }
+    })
+  },
   alert: function() {
     console.log('123434')
   }
