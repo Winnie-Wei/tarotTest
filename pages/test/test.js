@@ -5,8 +5,9 @@ Page({
     clientHeight: '',
     top: '',
     left: '',
-    imgList:[],
-    isChecked: ''
+    imgList: [],
+    isChecked: '',
+    prurl: ''
   },
   onLoad: function() {
     this.setData({
@@ -16,21 +17,78 @@ Page({
   },
   drag: function(e) {
     console.log(e)
-    
+
     this.setData({
       left: e.touches[0].clientX - 45,
       top: e.touches[0].clientY - 75,
-      isChecked : e.currentTarget.id
+      isChecked: e.currentTarget.id
     })
   },
-  share: function() {
+  share: function () {
     var that = this;
-    that.data.imgList = [];
+    Promise.all([getImg]).then(function (data) {
+      console.log(data)
+      const ctx = wx.createCanvasContext('img');
+      var imgUrl = '';
+      data.forEach(function (item) {
+        imgUrl = '../../image/waiteTarot/' + item.id + '.jpg'
+        ctx.drawImage(imgUrl, item.left, item.top, item.width, item.height);
+      });
+
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: that.data.clientWidtht,
+        height: that.data.clientHeight,
+        destWidth: that.data.clientWidtht,
+        destHeight: that.data.clientHeight,
+        canvasId: 'img',
+        success: function (res) {
+          console.log(res.tempFilePath);
+          that.setData({
+            prurl: res.tempFilePath
+          })
+        },
+        fail: function (res) {
+          console.log(res)
+        }
+      })
+    }) 
+  },
+  save: function() {
+    var that = this
+    wx.saveImageToPhotosAlbum({
+      filePath: that.data.prurl,
+      success(res) {
+        wx.showModal({
+          content: '图片已保存到相册，赶紧晒一下吧~',
+          showCancel: false,
+          confirmText: '好的',
+          confirmColor: '#333',
+          success: function(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              /* 该隐藏的隐藏 */
+              that.setData({
+                hidden: true
+              })
+            }
+          }
+        })
+      }
+    })
+  }
+});
+
+//function getImg() {
+ // var that = this;    var imgList = [];
+let getImg = new Promise(function (resolve, reject) {
+
     wx.createSelectorQuery().selectAll('.imgcss.t').boundingClientRect(function (rect) {
       rect.forEach(function (rect) {
-        that.data.imgList.push(rect);
+        imgList.push(rect);
       })
     }).exec();
-    console.log(that.data.imgList)
-  },
-})
+    resolve(imgList);
+  })
+//}
