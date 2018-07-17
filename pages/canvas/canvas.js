@@ -6,7 +6,7 @@ Page({
   },
   onLoad: function() {
     const ctx = wx.createCanvasContext('myCanvas2')
-
+    ctx.drawImage('../../image/waiteTarot/78.jpg', 200, 0, 90, 150);
     // Create linear gradient
     const grd = ctx.createLinearGradient(0, 0, 200, 0)
     grd.addColorStop(0.05, 'red')

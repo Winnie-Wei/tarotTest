@@ -1,6 +1,6 @@
 <!-- <view style="width:50px;height:50px;background:pink;position:absolute;left:{{left}}px;top:{{top}}px" bindtouchmove="drag"></view> -->
 
-<canvas canvas-id='img' style="border:1px solid red;width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></canvas>
+<canvas canvas-id='poker' style="border:1px solid red;width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></canvas>
 
 <image id='queen' class="imgcss t" src='../../image/waiteTarot/queen.jpg' style="width:90px;height:150px;position:absolute;left:{{left}}px;top:{{top}}px" bindtouchmove="drag"></image>
 

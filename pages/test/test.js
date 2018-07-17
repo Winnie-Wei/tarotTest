@@ -1,3 +1,4 @@
+//var Promise = require('../../plugins/es6-promise.js')
 var app = getApp();
 Page({
   data: {
@@ -10,6 +11,8 @@ Page({
     prurl: ''
   },
   onLoad: function() {
+    const ctx = wx.createCanvasContext('poker');
+    ctx.drawImage('../../image/waiteTarot/78.jpg', 200, 0, 90, 150);
     this.setData({
       clientHeight: app.globalData.clientHeight - 150,
       clientWidth: app.globalData.clientWidth - 4
@@ -24,36 +27,37 @@ Page({
       isChecked: e.currentTarget.id
     })
   },
-  share: function () {
+  share: function() {
     var that = this;
-    Promise.all([getImg]).then(function (data) {
-      console.log(data)
-      const ctx = wx.createCanvasContext('img');
-      var imgUrl = '';
-      data.forEach(function (item) {
-        imgUrl = '../../image/waiteTarot/' + item.id + '.jpg'
-        ctx.drawImage(imgUrl, item.left, item.top, item.width, item.height);
-      });
+    const ctx = wx.createCanvasContext('poker');
+    ctx.drawImage('../../image/waiteTarot/78.jpg', 200, 0, 90, 150);
+    getImg().then(function(data) {
+      // console.log(data)
+      // data.forEach(function(item) {
+      //   var imgUrl = '../../image/waiteTarot/' + item.id + '.jpg'
+      //   ctx.drawImage(imgUrl, item.left, item.top, item.width, item.height);
+      // });
+      ctx.drawImage('../../image/waiteTarot/78.jpg', 200, 0, 90, 150);
 
-      wx.canvasToTempFilePath({
-        x: 0,
-        y: 0,
-        width: that.data.clientWidtht,
-        height: that.data.clientHeight,
-        destWidth: that.data.clientWidtht,
-        destHeight: that.data.clientHeight,
-        canvasId: 'img',
-        success: function (res) {
-          console.log(res.tempFilePath);
-          that.setData({
-            prurl: res.tempFilePath
-          })
-        },
-        fail: function (res) {
-          console.log(res)
-        }
-      })
-    }) 
+    //   wx.canvasToTempFilePath({
+    //     x: 0,
+    //     y: 0,
+    //     width: that.data.clientWidtht,
+    //     height: that.data.clientHeight,
+    //     destWidth: that.data.clientWidtht,
+    //     destHeight: that.data.clientHeight,
+    //     canvasId: 'img',
+    //     success: function(res) {
+    //       console.log(res.tempFilePath);
+    //       that.setData({
+    //         prurl: res.tempFilePath
+    //       })
+    //     },
+    //     fail: function(res) {
+    //       console.log(res)
+    //     }
+    //   })
+    })
   },
   save: function() {
     var that = this
@@ -80,15 +84,14 @@ Page({
   }
 });
 
-//function getImg() {
- // var that = this;    var imgList = [];
-let getImg = new Promise(function (resolve, reject) {
-
-    wx.createSelectorQuery().selectAll('.imgcss.t').boundingClientRect(function (rect) {
-      rect.forEach(function (rect) {
+function getImg() {
+  var imgList = [];
+  return new Promise((resolve, reject) => {
+    wx.createSelectorQuery().selectAll('.imgcss.t').boundingClientRect(function(rect) {
+      rect.forEach(function(rect) {
         imgList.push(rect);
-      })
+      });
+      resolve(imgList);
     }).exec();
-    resolve(imgList);
   })
-//}
+}
