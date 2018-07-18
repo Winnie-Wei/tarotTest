@@ -1,5 +1,8 @@
 //var Promise = require('../../plugins/es6-promise.js')
 var app = getApp();
+const ctx = wx.createCanvasContext('img');
+var clientHeight = app.globalData.clientHeight - 150;
+var clientWidth = app.globalData.clientWidth - 4;
 Page({
   data: {
     clientWidth: '',
@@ -86,14 +89,16 @@ function getImg(that) {
 }
 
 function drawImg(data) {
-  const ctx = wx.createCanvasContext('img');
   return new Promise((resolve, reject) => {
-    data.forEach(function(item) {
-      var imgUrl = '../../image/waiteTarot/' + item.id + '.jpg';
-      ctx.drawImage(imgUrl, item.left, item.top, item.width, item.height);
-      ctx.drawImage('../../image/waiteTarot/78.jpg', item.left + 20, item.top + 20, item.width, item.height);
-    });
+    ctx.clearRect(0, 0, clientWidth, clientHeight);
     ctx.draw();
+    // data.forEach(function(item) {
+    //   var imgUrl = '../../image/waiteTarot/' + item.id + '.jpg';
+    //   ctx.drawImage(imgUrl, item.left, item.top, item.width, item.height);
+    //   ctx.drawImage('../../image/waiteTarot/78.jpg', item.left + 20, item.top + 20, item.width, item.height);
+    // });
+    ctx.drawImage('../../image/waiteTarot/78.jpg', 20,20, 150, 150);
+    ctx.draw(true);
     resolve();
   })
 }
