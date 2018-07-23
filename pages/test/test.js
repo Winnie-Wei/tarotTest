@@ -30,6 +30,7 @@ Page({
       return item
     }, []);
     console.log(this.data.cardArr)
+    
     // this.setData({
     //   left: e.touches[0].clientX - 45,
     //   top: e.touches[0].clientY - 75,
