@@ -1,8 +1,10 @@
 //var Promise = require('../../plugins/es6-promise.js')
+var tarotList = require('../../data/tarto-list.js');
 var app = getApp();
 const ctx = wx.createCanvasContext('img');
 var clientHeight = app.globalData.clientHeight - 150;
 var clientWidth = app.globalData.clientWidth - 4;
+var card = [];
 Page({
   data: {
     clientWidth: '',
@@ -17,11 +19,30 @@ Page({
   onLoad: function() {
     this.setData({
       clientHeight: app.globalData.clientHeight - 150,
-      clientWidth: app.globalData.clientWidth - 4
+      clientWidth: app.globalData.clientWidth - 4,
+      imgList: tarotList.imgList
     });
   },
   drag: function(e) {
-    console.log(e)
+    var that = this;
+    var imgleft = e.touches[0].clientX - 45;
+    var imgtop = e.touches[0].clientY - 75;
+    for (var i = 0; i < this.data.imgList.length; i++) {
+      if (this.data.imgList[i].id == e.currentTarget.id) {
+        var mleft = 'imgList['+ i + '].left';
+        var mtop = 'imgList[' + i + '].top';
+        var imgUrl = this.data.imgList[i].src;
+        this.setData({
+          [mleft]: e.touches[0].clientX - 45,
+          [mtop]: e.touches[0].clientY - 75,
+        });
+        //ctx.drawImage(imgUrl, imgleft, imgtop, 90, 150);
+        break;
+      }
+    }
+    //ctx.draw();
+    
+    //console.log(e)
     var card = extendObj(e.currentTarget, e.touches[0]);
     this.data.cardArr.push(card);
     var hash = {};
@@ -30,24 +51,18 @@ Page({
       return item
     }, []);
     console.log(this.data.cardArr)
+    card = this.data.cardArr;
+
     
-    // this.setData({
-    //   left: e.touches[0].clientX - 45,
-    //   top: e.touches[0].clientY - 75,
-    //   isChecked: e.currentTarget.id
-    // });
-    // var imgUrl = '../../image/waiteTarot/' + e.currentTarget.id + '.jpg';
-    // ctx.drawImage(imgUrl, this.data.left, this.data.top, 90, 150);
-    // ctx.draw();
   },
   share: function() {
-    //var that = this;
-    // getImg().then(data => {
-    //   drawImg(data);
-    // }).then(() => {
-    //   this.createImg();
-    // })
-    this.createImg();
+    var that = this;
+    getImg().then(data => {
+      drawImg(card);
+    }).then(() => {
+      this.createImg();
+    })
+    //this.createImg();
   },
   save: function() {
     var that = this;
@@ -105,6 +120,19 @@ function getImg(that) {
 
 function drawImg(data) {
   return new Promise((resolve, reject) => {
+    // data.forEach(function (item) {
+    //   var mleft = item.clientX - 45;
+    //   var mtop = item.clientY - 75;
+    //   var imgUrl = '../../image/waiteTarot/' + item.id + '.jpg';
+    //   ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
+    // });
+    for(var i=0; i<data.length; i++){
+      var mleft = data[i].clientX - 45;
+      var mtop = data[i].clientY - 75;
+      var imgUrl = '../../image/waiteTarot/' + data[i].id + '.jpg';
+      ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
+    }
+    ctx.draw();
     // ctx.clearRect(0, 0, clientWidth, clientHeight);
     // ctx.draw();
     // // data.forEach(function(item) {
