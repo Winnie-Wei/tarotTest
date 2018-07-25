@@ -4,7 +4,7 @@ var app = getApp();
 const ctx = wx.createCanvasContext('img');
 var clientHeight = app.globalData.clientHeight - 150;
 var clientWidth = app.globalData.clientWidth - 4;
-var card = [];
+var cardlist = [];
 Page({
   data: {
     clientWidth: '',
@@ -14,7 +14,8 @@ Page({
     imgList: [],
     isChecked: '',
     prurl: '',
-    cardArr: []
+    cardArr: [],
+    cardlist: []
   },
   onLoad: function() {
     this.setData({
@@ -45,20 +46,25 @@ Page({
     //console.log(e)
     var card = extendObj(e.currentTarget, e.touches[0]);
     this.data.cardArr.push(card);
+    this.data.cardArr.reverse();
     var hash = {};
     this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
       hash[next.id] ? '' : hash[next.id] = true && item.push(next);
+      //item.push(next) && hash[next.id] ? '' : hash[next.id] = true ;
       return item
     }, []);
-    console.log(this.data.cardArr)
-    card = this.data.cardArr;
+    console.log(this.data.cardArr);
+    this.setData({
+      cardlist: this.data.cardArr
+    })
+    //cardlist = this.data.cardArr;
 
     
   },
-  share: function() {
+  share: function(card) {
     var that = this;
     getImg().then(data => {
-      drawImg(card);
+      drawImg(this.data.cardlist);
     }).then(() => {
       this.createImg();
     })
@@ -75,6 +81,8 @@ Page({
           confirmText: '好的',
           confirmColor: '#333',
           success: function(res) {
+            ctx.clearRect();
+            ctx.draw()
             if (res.confirm) {
               console.log('用户点击确定');
             }
@@ -107,13 +115,13 @@ Page({
 });
 
 function getImg(that) {
-  var imgList = [];
+  var imgLists = [];
   return new Promise((resolve, reject) => {
     wx.createSelectorQuery().selectAll('.imgcss.t').boundingClientRect(function(rect) {
       rect.forEach(function(rect) {
-        imgList.push(rect);
+        imgLists.push(rect);
       });
-      resolve(imgList);
+      resolve(imgLists);
     }).exec();
   })
 }
@@ -130,7 +138,7 @@ function drawImg(data) {
       var mleft = data[i].clientX - 45;
       var mtop = data[i].clientY - 75;
       var imgUrl = '../../image/waiteTarot/' + data[i].id + '.jpg';
-      ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
+      ctx.drawImage(imgUrl, mleft+10, mtop+10, 90, 150);
     }
     ctx.draw();
     // ctx.clearRect(0, 0, clientWidth, clientHeight);
