@@ -1,9 +1,8 @@
-//var Promise = require('../../plugins/es6-promise.js')
 var tarotList = require('../../data/tarto-list.js');
 var app = getApp();
-const ctx = wx.createCanvasContext('img');
 var clientHeight = app.globalData.clientHeight - 150;
 var clientWidth = app.globalData.clientWidth - 4;
+const ctx = wx.createCanvasContext('img');
 var cardlist = [];
 Page({
   data: {
@@ -19,8 +18,8 @@ Page({
   },
   onLoad: function() {
     this.setData({
-      clientHeight: app.globalData.clientHeight - 150,
-      clientWidth: app.globalData.clientWidth - 4,
+      clientHeight: app.globalData.clientHeight,
+      clientWidth: app.globalData.clientWidth,
       imgList: tarotList.imgList
     });
   },
@@ -30,45 +29,35 @@ Page({
     var imgtop = e.touches[0].clientY - 75;
     for (var i = 0; i < this.data.imgList.length; i++) {
       if (this.data.imgList[i].id == e.currentTarget.id) {
-        var mleft = 'imgList['+ i + '].left';
+        var mleft = 'imgList[' + i + '].left';
         var mtop = 'imgList[' + i + '].top';
         var imgUrl = this.data.imgList[i].src;
         this.setData({
           [mleft]: e.touches[0].clientX - 45,
           [mtop]: e.touches[0].clientY - 75,
         });
-        //ctx.drawImage(imgUrl, imgleft, imgtop, 90, 150);
         break;
       }
     }
-    //ctx.draw();
-    
-    //console.log(e)
+
     var card = extendObj(e.currentTarget, e.touches[0]);
     this.data.cardArr.push(card);
     this.data.cardArr.reverse();
     var hash = {};
     this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
       hash[next.id] ? '' : hash[next.id] = true && item.push(next);
-      //item.push(next) && hash[next.id] ? '' : hash[next.id] = true ;
       return item
     }, []);
     console.log(this.data.cardArr);
     this.setData({
       cardlist: this.data.cardArr
     })
-    //cardlist = this.data.cardArr;
-
-    
   },
   share: function(card) {
     var that = this;
     getImg().then(data => {
-      drawImg(this.data.cardlist);
-    }).then(() => {
-      this.createImg();
+      this.drawImg(this.data);
     })
-    //this.createImg();
   },
   save: function() {
     var that = this;
@@ -81,8 +70,6 @@ Page({
           confirmText: '好的',
           confirmColor: '#333',
           success: function(res) {
-            ctx.clearRect();
-            ctx.draw()
             if (res.confirm) {
               console.log('用户点击确定');
             }
@@ -91,26 +78,45 @@ Page({
       }
     })
   },
-  createImg: function() {
+  drawImg: function(data) {
     var that = this;
-    wx.canvasToTempFilePath({
-      x: 0,
-      y: 0,
-      width: that.data.clientWidtht,
-      height: that.data.clientHeight,
-      destWidth: that.data.clientWidtht,
-      destHeight: that.data.clientHeight,
-      canvasId: 'img',
-      success: function(res) {
-        console.log(res.tempFilePath);
-        that.setData({
-          prurl: res.tempFilePath
-        })
-      },
-      fail: function(res) {
-        console.log(res)
+    return new Promise((resolve, reject) => {
+      var width = this.data.clientWidth;
+      var height = this.data.clientHeight
+      ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
+      for (var i = 0; i < data.cardlist.length; i++) {
+        var mleft = data.cardlist[i].clientX - 45;
+        var mtop = data.cardlist[i].clientY - 75;
+        var imgUrl = '../../image/waiteTarot/' + data.cardlist[i].id + '.jpg';
+        ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
       }
+      ctx.draw(false, setTimeout(function() {
+        wx.canvasToTempFilePath({
+          x: 0,
+          y: 0,
+          width: that.data.clientWidtht,
+          height: that.data.clientHeight,
+          destWidth: that.data.clientWidtht,
+          destHeight: that.data.clientHeight,
+          canvasId: 'img',
+          success: function (res) {
+            ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
+            ctx.draw();
+            console.log(res.tempFilePath);
+            that.setData({
+              prurl: res.tempFilePath
+            });
+          },
+          fail: function(res) {
+            console.log(res)
+          }
+        })
+      },500));
+      resolve();
     })
+  },
+  turnback: function() {
+    console.log('123')
   }
 });
 
@@ -123,34 +129,6 @@ function getImg(that) {
       });
       resolve(imgLists);
     }).exec();
-  })
-}
-
-function drawImg(data) {
-  return new Promise((resolve, reject) => {
-    // data.forEach(function (item) {
-    //   var mleft = item.clientX - 45;
-    //   var mtop = item.clientY - 75;
-    //   var imgUrl = '../../image/waiteTarot/' + item.id + '.jpg';
-    //   ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
-    // });
-    for(var i=0; i<data.length; i++){
-      var mleft = data[i].clientX - 45;
-      var mtop = data[i].clientY - 75;
-      var imgUrl = '../../image/waiteTarot/' + data[i].id + '.jpg';
-      ctx.drawImage(imgUrl, mleft+10, mtop+10, 90, 150);
-    }
-    ctx.draw();
-    // ctx.clearRect(0, 0, clientWidth, clientHeight);
-    // ctx.draw();
-    // // data.forEach(function(item) {
-    // //   var imgUrl = '../../image/waiteTarot/' + item.id + '.jpg';
-    // //   ctx.drawImage(imgUrl, item.left, item.top, item.width, item.height);
-    // //   ctx.drawImage('../../image/waiteTarot/78.jpg', item.left + 20, item.top + 20, item.width, item.height);
-    // // });
-    // ctx.drawImage('../../image/waiteTarot/78.jpg', 20, 20, 150, 150);
-    // ctx.draw(true);
-    resolve();
   })
 }
 
@@ -173,4 +151,8 @@ function extendObj() { //扩展对象
     }
   }
   return temp;
+}
+
+function turn(){
+  console.log('123')
 }

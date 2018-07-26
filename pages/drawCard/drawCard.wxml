@@ -6,7 +6,11 @@
 
 <image id='swords10' class="imgcss t" src='../../image/waiteTarot/swords10.jpg' style="width:90px;height:150px;position:absolute;left:{{left}}px;top:{{top}}px" bindtouchmove="drag"></image> -->
 
-<image wx:for="{{imgList}}" wx:key="{{index}}" id='{{item.id}}' class="imgcss t" src='{{item.src}}' style="width:90px;height:150px;position:absolute;left:{{item.left}}px;top:{{item.top}}px" bindtouchmove="drag"></image>
+<view>
+  <image wx:for="{{imgList}}" wx:key="{{index}}" id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="width:90px;height:150px;position:absolute;left:{{item.left}}px;top:{{item.top}}px" bindtouchmove="drag" bindtap="turnback"></image>
+  <!-- <image wx:for="{{imgList}}" wx:key="{{index}}" id='{{item.id}}' class="imgcss t font" src='{{item.src}}' style="width:90px;height:150px;position:absolute;left:{{item.left}}px;top:{{item.top}}px" bindtouchmove="drag" ></image> -->
+</view>
+
 
 
 <button class='share' type='primary' bindtap='share'>生成分享图</button>

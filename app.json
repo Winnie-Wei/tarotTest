@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/test/test",
+    "pages/drawCard/drawCard",
     "pages/createImg/createImg",
     "pages/canvas/canvas",
     "pages/notes/notes",
@@ -32,8 +32,8 @@
         "selectedIconPath": "image/icon/card.png"
       },
       {
-        "pagePath": "pages/test/test",
-        "text": "test",
+        "pagePath": "pages/drawCard/drawCard",
+        "text": "抽牌",
         "iconPath": "image/icon/other.png",
         "selectedIconPath": "image/icon/other.png"
       },
