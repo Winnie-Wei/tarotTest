@@ -48,8 +48,8 @@ var noteItem = [
 ];
 
 var imgList = [
-  { "id": "queen", "src": "../../image/waiteTarot/queen.jpg", "left": 0, "top": 0},
-  { "id": "swords10", "src": "../../image/waiteTarot/swords10.jpg", "left": 10, "top": 10 }
+  { "id": "queen", "src": "../../image/waiteTarot/queen.jpg", "left": 0, "top": 0, "zindexF": 2, "zindexB": 1, "transF": "", "transB": "rotateY(180deg)"},
+  { "id": "swords10", "src": "../../image/waiteTarot/swords10.jpg", "left": 10, "top": 10, "zindexF": 2, "zindexB": 1, "transF": "", "transB": "rotateY(180deg)" }
 ]
 
 

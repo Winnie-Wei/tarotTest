@@ -18,17 +18,19 @@ Page({
   },
   onLoad: function() {
     this.setData({
-      clientHeight: app.globalData.clientHeight,
+      clientHeight: app.globalData.clientHeight - 150,
       clientWidth: app.globalData.clientWidth,
       imgList: tarotList.imgList
     });
   },
   drag: function(e) {
+    console.log(e)
     var that = this;
     var imgleft = e.touches[0].clientX - 45;
     var imgtop = e.touches[0].clientY - 75;
     for (var i = 0; i < this.data.imgList.length; i++) {
-      if (this.data.imgList[i].id == e.currentTarget.id) {
+     // if (this.data.imgList[i].id == e.target.id) {
+      if ( e.target.id.indexOf(this.data.imgList[i].id) !== -1 ) {
         var mleft = 'imgList[' + i + '].left';
         var mtop = 'imgList[' + i + '].top';
         var imgUrl = this.data.imgList[i].src;
@@ -40,7 +42,7 @@ Page({
       }
     }
 
-    var card = extendObj(e.currentTarget, e.touches[0]);
+    var card = extendObj(e.target, e.touches[0]);
     this.data.cardArr.push(card);
     this.data.cardArr.reverse();
     var hash = {};
@@ -87,8 +89,13 @@ Page({
       for (var i = 0; i < data.cardlist.length; i++) {
         var mleft = data.cardlist[i].clientX - 45;
         var mtop = data.cardlist[i].clientY - 75;
-        var imgUrl = '../../image/waiteTarot/' + data.cardlist[i].id + '.jpg';
-        ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
+        var mid = data.cardlist[i].id;
+        if (mid.indexOf("back") !== -1){ //图案面
+          mid = mid.substring(0,mid.length-4);
+        }else{
+          var imgUrl = '../../image/waiteTarot/' + mid + '.jpg';
+          ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
+        } 
       }
       ctx.draw(false, setTimeout(function() {
         wx.canvasToTempFilePath({
@@ -115,8 +122,22 @@ Page({
       resolve();
     })
   },
-  turnback: function() {
-    console.log('123')
+  turnback: function(e) {
+    for (var i = 0; i < this.data.imgList.length; i++) {
+      if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
+        var zindexF = 'imgList[' + i + '].zindexF';
+        var zindexB = 'imgList[' + i + '].zindexB';
+        var transF = 'imgList[' + i + '].transF';
+        var transB = 'imgList[' + i + '].transB';
+        this.setData({
+          [zindexF]: 1,
+          [zindexB]: 2,
+          [transF]: "rotateY(180deg)",
+          [transB]: "rotateY(0deg)"
+        });
+        break;
+      }
+    }
   }
 });
 
@@ -151,8 +172,4 @@ function extendObj() { //扩展对象
     }
   }
   return temp;
-}
-
-function turn(){
-  console.log('123')
 }

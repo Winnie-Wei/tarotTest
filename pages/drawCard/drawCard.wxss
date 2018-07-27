@@ -1,0 +1,21 @@
+/* .card-view {
+  position: relative;
+  perspective: 1000px;
+} */
+
+.card-view image {
+  width: 90px;
+  height: 150px;
+  position: absolute;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card-view image.front{
+  /* z-index: 2;
+  transform: rotateY(180deg); */
+  transition: all 1s ease;
+}
+/* .card-view image.back{
+  z-index: 1;
+} */
