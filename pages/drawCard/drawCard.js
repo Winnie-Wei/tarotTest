@@ -1,7 +1,5 @@
 var tarotList = require('../../data/tarto-list.js');
 var app = getApp();
-var clientHeight = app.globalData.clientHeight - 150;
-var clientWidth = app.globalData.clientWidth - 4;
 const ctx = wx.createCanvasContext('img');
 var cardlist = [];
 Page({
@@ -18,7 +16,7 @@ Page({
   },
   onLoad: function() {
     this.setData({
-      clientHeight: app.globalData.clientHeight - 150,
+      clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
       imgList: tarotList.imgList
     });
@@ -29,8 +27,8 @@ Page({
     var imgleft = e.touches[0].clientX - 45;
     var imgtop = e.touches[0].clientY - 75;
     for (var i = 0; i < this.data.imgList.length; i++) {
-     // if (this.data.imgList[i].id == e.target.id) {
-      if ( e.target.id.indexOf(this.data.imgList[i].id) !== -1 ) {
+      // if (this.data.imgList[i].id == e.target.id) {
+      if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
         var mleft = 'imgList[' + i + '].left';
         var mtop = 'imgList[' + i + '].top';
         var imgUrl = this.data.imgList[i].src;
@@ -59,7 +57,17 @@ Page({
     var that = this;
     getImg().then(data => {
       this.drawImg(this.data);
-    })
+    }).then(() => {
+      var length = this.data.cardlist.length;
+      for (var i = 0, j = 0; i < length; i++, j++) {
+        var sid = this.data.cardlist[j].id;
+        if (sid.indexOf("back") !== -1) {
+          this.data.cardlist.splice(j, 1);
+          j--;
+        }
+      }
+    });
+
   },
   save: function() {
     var that = this;
@@ -90,12 +98,11 @@ Page({
         var mleft = data.cardlist[i].clientX - 45;
         var mtop = data.cardlist[i].clientY - 75;
         var mid = data.cardlist[i].id;
-        if (mid.indexOf("back") !== -1){ //图案面
-          mid = mid.substring(0,mid.length-4);
-        }else{
-          var imgUrl = '../../image/waiteTarot/' + mid + '.jpg';
-          ctx.drawImage(imgUrl, mleft, mtop, 90, 150);
-        } 
+        if (mid.indexOf("back") !== -1) { //背面
+          mid = mid.substring(0, mid.length - 4);
+        }
+        var imgUrl = '../../image/waiteTarot/' + mid + '.jpg';
+        ctx.drawImage(imgUrl, mleft, mtop, 85, 141);
       }
       ctx.draw(false, setTimeout(function() {
         wx.canvasToTempFilePath({
@@ -106,7 +113,7 @@ Page({
           destWidth: that.data.clientWidtht,
           destHeight: that.data.clientHeight,
           canvasId: 'img',
-          success: function (res) {
+          success: function(res) {
             ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
             ctx.draw();
             console.log(res.tempFilePath);
@@ -118,7 +125,7 @@ Page({
             console.log(res)
           }
         })
-      },500));
+      }, 500));
       resolve();
     })
   },

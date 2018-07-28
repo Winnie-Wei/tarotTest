@@ -2,7 +2,11 @@
   position: relative;
   perspective: 1000px;
 } */
-
+.bg-image{
+  position: fixed;
+  top:0;
+  left:0;
+}
 .card-view image {
   width: 90px;
   height: 150px;
