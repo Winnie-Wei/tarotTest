@@ -1,7 +1,7 @@
-/* .card-view {
-  position: relative;
-  perspective: 1000px;
-} */
+.card-view {
+  display:inline-block;
+  height: 150px;
+}
 .bg-image{
   position: fixed;
   top:0;
@@ -13,13 +13,16 @@
   position: absolute;
   transform-style: preserve-3d;
   backface-visibility: hidden;
+  transition: all 0.2s linear;
 }
 
-.card-view image.front{
-  /* z-index: 2;
-  transform: rotateY(180deg); */
-  transition: all 1s ease;
+.card-num{
+  color:#fff;
+  position:absolute;
+  transition: all 0.2s linear;
 }
-/* .card-view image.back{
-  z-index: 1;
-} */
+
+.scroll-box{
+  display:flex;
+  white-space:nowrap;   
+}

@@ -1,26 +1,20 @@
-<!-- <image class="bg-image" src='../../image/pic/bg.jpg' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></image> -->
+<!-- <image class="bg-image" src='../../image/pic/bg.jpg' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></image>
 
-<!-- <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></canvas>
+<canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></canvas>
 
 <view class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag">
-  <view style='color:#fff;position:absolute;left:{{item.left}}px;top:{{item.top}}px;z-index:3;'>{{index+1}}0</view>
+  <view class='card-num' style='left:{{item.left}}px;top:{{item.top}}px;z-index:3;'>{{index+1}}</view>
   <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};"></image>
   <image id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};" bindtap="turnback"></image>
 </view> -->
 
-<swiper>
-  <swiper-item>
-    <view class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag">
-      <view style='color:#fff;position:absolute;left:{{item.left}}px;top:{{item.top}}px;z-index:3;'>{{index+1}}0</view>
-      <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};"></image>
-      <image id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};" bindtap="turnback"></image>
-    </view>
-  </swiper-item>
-  <swiper-item>
-    <view>22222222</view>
-  </swiper-item>
-</swiper>
-
-
 <!-- <button class='share' type='primary' bindtap='share'>生成分享图</button>
 <button type='primary' size='mini' bindtap='save'>保存分享图</button> -->
+
+<scroll-view scroll-x class="scroll-box">
+  <view class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag">
+    <view class='card-num' style='left:{{item.left}}px;top:{{item.top}}px;z-index:3;'>{{index+1}}</view>
+    <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};"></image>
+    <image id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};" bindtap="turnback"></image>
+  </view>
+</scroll-view>
