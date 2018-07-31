@@ -8,9 +8,9 @@
   left:0;
 }
 .card-view image {
-  width: 90px;
-  height: 150px;
-  position: absolute;
+  width: 60px;
+  height: 100px;
+  position: fixed;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   transition: all 0.2s linear;
@@ -24,5 +24,7 @@
 
 .scroll-box{
   display:flex;
-  white-space:nowrap;   
+  white-space:nowrap; 
+  position: fixed;
+  bottom: 0;  
 }

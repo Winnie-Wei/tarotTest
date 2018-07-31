@@ -24,8 +24,8 @@ Page({
   drag: function(e) {
     console.log(e)
     var that = this;
-    var imgleft = e.touches[0].clientX - 45;
-    var imgtop = e.touches[0].clientY - 75;
+    var imgleft = e.touches[0].clientX - 30;
+    var imgtop = e.touches[0].clientY - 50;
     for (var i = 0; i < this.data.imgList.length; i++) {
       // if (this.data.imgList[i].id == e.target.id) {
       if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
@@ -33,8 +33,8 @@ Page({
         var mtop = 'imgList[' + i + '].top';
         var imgUrl = this.data.imgList[i].src;
         this.setData({
-          [mleft]: e.touches[0].clientX - 45,
-          [mtop]: e.touches[0].clientY - 75,
+          [mleft]: e.touches[0].clientX - 30,
+          [mtop]: e.touches[0].clientY - 50,
         });
         break;
       }
@@ -95,14 +95,14 @@ Page({
       var height = this.data.clientHeight
       ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
       for (var i = 0; i < data.cardlist.length; i++) {
-        var mleft = data.cardlist[i].clientX - 45;
-        var mtop = data.cardlist[i].clientY - 75;
+        var mleft = data.cardlist[i].clientX - 30;
+        var mtop = data.cardlist[i].clientY - 50;
         var mid = data.cardlist[i].id;
         if (mid.indexOf("back") !== -1) { //背面
           mid = mid.substring(0, mid.length - 4);
         }
         var imgUrl = '../../image/waiteTarot/' + mid + '.jpg';
-        ctx.drawImage(imgUrl, mleft, mtop, 85, 141);
+        ctx.drawImage(imgUrl, mleft, mtop, 60, 100);
       }
       ctx.draw(false, setTimeout(function() {
         wx.canvasToTempFilePath({
