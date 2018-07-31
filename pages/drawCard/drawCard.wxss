@@ -10,16 +10,16 @@
 .card-view image {
   width: 60px;
   height: 100px;
-  position: fixed;
+  position: absolute;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  transition: all 0.2s linear;
+  transition: all 0s linear;
 }
 
 .card-num{
   color:#fff;
   position:absolute;
-  transition: all 0.2s linear;
+  transition: all 0s linear;
 }
 
 .scroll-box{

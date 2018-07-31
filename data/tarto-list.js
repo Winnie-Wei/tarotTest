@@ -51,7 +51,7 @@ var noteItem = [
 var top = app.globalData.clientHeight-100,imgList = [];
 var name = ["queen", "king", "swords10", "couple", "angel", "wands1", "man", "wheel", "women", "justic"];
 for (var i = 0; i < name.length; i++ ) {
-  imgList.push({ "id": name[i], "src": "../../image/waiteTarot/"+ name[i] +".jpg", "left": i*40, "top": top, "zindexF": 2, "zindexB": 1, "transF": "", "transB": "rotateY(180deg)" })
+  imgList.push({ "id": name[i], "src": "../../image/waiteTarot/"+ name[i] +".jpg", "left": i*40, "top": top, "zindexF": 2, "zindexB": 1, "transF": "", "transB": "rotateY(180deg)", "position": "absolute" })
 }
 // var imgList = [
 //   { "id": "queen", "src": "../../image/waiteTarot/queen.jpg", "left": 0, "top": top, "zindexF": 2, "zindexB": 1, "transF": "", "transB": "rotateY(180deg)" },

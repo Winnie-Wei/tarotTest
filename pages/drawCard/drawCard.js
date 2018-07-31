@@ -12,7 +12,8 @@ Page({
     isChecked: '',
     prurl: '',
     cardArr: [],
-    cardlist: []
+    cardlist: [],
+    scrollkey:true
   },
   onLoad: function() {
     this.setData({
@@ -24,33 +25,37 @@ Page({
   drag: function(e) {
     console.log(e)
     var that = this;
-    var imgleft = e.touches[0].clientX - 30;
-    var imgtop = e.touches[0].clientY - 50;
     for (var i = 0; i < this.data.imgList.length; i++) {
-      // if (this.data.imgList[i].id == e.target.id) {
       if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
         var mleft = 'imgList[' + i + '].left';
         var mtop = 'imgList[' + i + '].top';
-        var imgUrl = this.data.imgList[i].src;
+        var mposition = 'imgList[' + i + '].position';
         this.setData({
           [mleft]: e.touches[0].clientX - 30,
           [mtop]: e.touches[0].clientY - 50,
+          [mposition]: 'fixed'
         });
         break;
       }
     }
 
-    var card = extendObj(e.target, e.touches[0]);
-    this.data.cardArr.push(card);
-    this.data.cardArr.reverse();
-    var hash = {};
-    this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
-      hash[next.id] ? '' : hash[next.id] = true && item.push(next);
-      return item
-    }, []);
+    // var card = extendObj(e.target, e.touches[0]);
+    // this.data.cardArr.push(card);
+    // this.data.cardArr.reverse();
+    // var hash = {};
+    // this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
+    //   hash[next.id] ? '' : hash[next.id] = true && item.push(next);
+    //   return item
+    // }, []);
     console.log(this.data.cardArr);
     this.setData({
-      cardlist: this.data.cardArr
+      cardlist: this.data.cardArr,
+      scrollkey: false
+    })
+  },
+  dragEnd: function(){
+    this.setData({
+      scrollkey: true
     })
   },
   share: function(card) {
@@ -136,11 +141,13 @@ Page({
         var zindexB = 'imgList[' + i + '].zindexB';
         var transF = 'imgList[' + i + '].transF';
         var transB = 'imgList[' + i + '].transB';
+        var mposition = 'imgList[' + i + '].position';
         this.setData({
           [zindexF]: 1,
           [zindexB]: 2,
           [transF]: "rotateY(180deg)",
-          [transB]: "rotateY(0deg)"
+          [transB]: "rotateY(0deg)",
+          [mposition]: "fixed"
         });
         break;
       }
