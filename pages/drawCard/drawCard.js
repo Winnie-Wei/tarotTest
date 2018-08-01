@@ -13,7 +13,7 @@ Page({
     prurl: '',
     cardArr: [],
     cardlist: [],
-    scrollkey:true
+    scrollkey: true
   },
   onLoad: function() {
     this.setData({
@@ -24,6 +24,9 @@ Page({
   },
   drag: function(e) {
     console.log(e)
+    if (e.currentTarget.dataset.dragkey == 0) {
+      return;
+    }
     var that = this;
     for (var i = 0; i < this.data.imgList.length; i++) {
       if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
@@ -39,21 +42,21 @@ Page({
       }
     }
 
-    // var card = extendObj(e.target, e.touches[0]);
-    // this.data.cardArr.push(card);
-    // this.data.cardArr.reverse();
-    // var hash = {};
-    // this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
-    //   hash[next.id] ? '' : hash[next.id] = true && item.push(next);
-    //   return item
-    // }, []);
+    var card = extendObj(e.target, e.touches[0]);
+    this.data.cardArr.push(card);
+    this.data.cardArr.reverse();
+    var hash = {};
+    this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
+      hash[next.id] ? '' : hash[next.id] = true && item.push(next);
+      return item
+    }, []);
     console.log(this.data.cardArr);
     this.setData({
       cardlist: this.data.cardArr,
       scrollkey: false
     })
   },
-  dragEnd: function(){
+  dragEnd: function() {
     this.setData({
       scrollkey: true
     })
@@ -135,23 +138,56 @@ Page({
     })
   },
   turnback: function(e) {
-    for (var i = 0; i < this.data.imgList.length; i++) {
-      if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
-        var zindexF = 'imgList[' + i + '].zindexF';
-        var zindexB = 'imgList[' + i + '].zindexB';
-        var transF = 'imgList[' + i + '].transF';
-        var transB = 'imgList[' + i + '].transB';
-        var mposition = 'imgList[' + i + '].position';
-        this.setData({
-          [zindexF]: 1,
-          [zindexB]: 2,
-          [transF]: "rotateY(180deg)",
-          [transB]: "rotateY(0deg)",
-          [mposition]: "fixed"
-        });
-        break;
+    if (e.currentTarget.dataset.dragkey == 0) {
+      for (var i = 0; i < this.data.imgList.length; i++) {
+        var top = 'imgList[' + i + '].top';
+        var dragkey = 'imgList[' + i + '].dragkey';
+        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
+          this.setData({
+            [top]: app.globalData.clientHeight - 150,
+            [dragkey]: 1
+          });
+          break;
+        } else {
+          var val = app.globalData.clientHeight - 110;
+          this.setData({
+            [top]: val,
+            [dragkey]: 0
+          });
+        }
+      }
+    } else {
+      for (var i = 0; i < this.data.imgList.length; i++) {
+        var top = 'imgList[' + i + '].top';
+        var dragkey = 'imgList[' + i + '].dragkey';
+        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
+          this.setData({
+            [top]: app.globalData.clientHeight - 110,
+            [dragkey]: 0
+          });
+          break;
+        }
       }
     }
+    // for (var i = 0; i < this.data.imgList.length; i++) {
+    //   if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
+    //     var zindexF = 'imgList[' + i + '].zindexF';
+    //     var zindexB = 'imgList[' + i + '].zindexB';
+    //     var transF = 'imgList[' + i + '].transF';
+    //     var transB = 'imgList[' + i + '].transB';
+    //     var mposition = 'imgList[' + i + '].position';
+    //     var shownum = 'imgList[' + i + '].shownum';
+    //     this.setData({
+    //       [zindexF]: 1,
+    //       [zindexB]: 2,
+    //       [transF]: "rotateY(180deg)",
+    //       [transB]: "rotateY(0deg)",
+    //       [mposition]: "fixed",
+    //       [shownum]: true
+    //     });
+    //     break;
+    //   }
+    // }
   }
 });
 

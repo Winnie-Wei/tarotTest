@@ -1,6 +1,13 @@
+.scroll-container{
+  width: 100%;
+  overflow: hidden;
+  height:555px;
+
+}
 .card-view {
   display:inline-block;
-  height: 150px;
+  height: 100px;
+  width: 60px;
 }
 .bg-image{
   position: fixed;
@@ -13,18 +20,19 @@
   position: absolute;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  transition: all 0s linear;
+  transition: all 0.1s linear;
 }
 
 .card-num{
   color:#fff;
   position:absolute;
-  transition: all 0s linear;
+  transition: all 0.1s linear;
 }
 
 .scroll-box{
   display:flex;
   white-space:nowrap; 
+  overflow:hidden;
   position: fixed;
   bottom: 0;  
 }

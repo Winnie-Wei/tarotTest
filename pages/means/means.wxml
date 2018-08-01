@@ -2,7 +2,7 @@
   <show-tarot-horizontal tarot-card="{{tartoLists}}" type-title="大阿尔卡纳"></show-tarot-horizontal>
   <show-tarot-horizontal tarot-card="{{tartoLists}}" type-title="星币"></show-tarot-horizontal>
   <show-tarot-horizontal tarot-card="{{tartoLists}}" type-title="圣杯"></show-tarot-horizontal>
-  <show-tarot-horizontal tarot-card="{{tartoLists}}" type-title="圣杯"></show-tarot-horizontal>
+  <show-tarot-horizontal tarot-card="{{tartoLists}}" type-title="权杖"></show-tarot-horizontal>
 
   <!-- <view wx:for="{{tartoLists}}" wx:key="{{item.id}}">
     <view>{{item.title}}</view>
