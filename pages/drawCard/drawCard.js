@@ -1,6 +1,7 @@
 var tarotList = require('../../data/tarto-list.js');
 var app = getApp();
 const ctx = wx.createCanvasContext('img');
+const ctxs = wx.createCanvasContext('shuffle');
 var cardlist = [];
 Page({
   data: {
@@ -13,7 +14,8 @@ Page({
     prurl: '',
     cardArr: [],
     cardlist: [],
-    scrollkey: true
+    scrollkey: true,
+    drawPanel:true
   },
   onLoad: function() {
     this.setData({
@@ -33,10 +35,12 @@ Page({
         var mleft = 'imgList[' + i + '].left';
         var mtop = 'imgList[' + i + '].top';
         var mposition = 'imgList[' + i + '].position';
+        var mdragkey = 'imgList[' + i + '].dragkey';
         this.setData({
           [mleft]: e.touches[0].clientX - 30,
           [mtop]: e.touches[0].clientY - 50,
-          [mposition]: 'fixed'
+          [mposition]: 'fixed',
+          [mdragkey]: 2
         });
         break;
       }
@@ -138,17 +142,18 @@ Page({
     })
   },
   turnback: function(e) {
+    console.log(e)
     if (e.currentTarget.dataset.dragkey == 0) {
       for (var i = 0; i < this.data.imgList.length; i++) {
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
-        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
+        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
           this.setData({
             [top]: app.globalData.clientHeight - 150,
             [dragkey]: 1
           });
           break;
-        } else {
+        } else if (this.data.imgList[i].dragkey == 0) { //其他的牌保持排列
           var val = app.globalData.clientHeight - 110;
           this.setData({
             [top]: val,
@@ -156,7 +161,7 @@ Page({
           });
         }
       }
-    } else {
+    } else if (e.currentTarget.dataset.dragkey == 1) {
       for (var i = 0; i < this.data.imgList.length; i++) {
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
@@ -168,26 +173,69 @@ Page({
           break;
         }
       }
+    } else if (e.currentTarget.dataset.dragkey == 2) {
+      for (var i = 0; i < this.data.imgList.length; i++) {
+        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
+          var zindexF = 'imgList[' + i + '].zindexF';
+          var zindexB = 'imgList[' + i + '].zindexB';
+          var transF = 'imgList[' + i + '].transF';
+          var transB = 'imgList[' + i + '].transB';
+          var mposition = 'imgList[' + i + '].position';
+          var shownum = 'imgList[' + i + '].shownum';
+          this.setData({
+            [zindexF]: 11,
+            [zindexB]: 12,
+            [transF]: "rotateY(180deg)",
+            [transB]: "rotateY(0deg)",
+            [mposition]: "fixed",
+            [shownum]: true
+          });
+          break;
+        }
+      }
     }
-    // for (var i = 0; i < this.data.imgList.length; i++) {
-    //   if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
-    //     var zindexF = 'imgList[' + i + '].zindexF';
-    //     var zindexB = 'imgList[' + i + '].zindexB';
-    //     var transF = 'imgList[' + i + '].transF';
-    //     var transB = 'imgList[' + i + '].transB';
-    //     var mposition = 'imgList[' + i + '].position';
-    //     var shownum = 'imgList[' + i + '].shownum';
-    //     this.setData({
-    //       [zindexF]: 1,
-    //       [zindexB]: 2,
-    //       [transF]: "rotateY(180deg)",
-    //       [transB]: "rotateY(0deg)",
-    //       [mposition]: "fixed",
-    //       [shownum]: true
-    //     });
-    //     break;
-    //   }
-    // }
+  },
+  shuffle: function () {
+    for (var i = 0; i < 78; i++) {
+      var x = 0,
+        y = 0,
+        deg = 0,
+        rx = 0,
+        ry = 0;
+      if (this.data.clientWidth < 350) {
+        x = Math.random() * 160 + 50;
+        y = Math.random() * 160 + 15;
+        deg = Math.random() * Math.PI;
+        rx = x + 50;
+        ry = y + 46;
+        ctxs.translate(rx, ry);
+        ctxs.rotate(deg);
+        ctxs.drawImage('../../image/waiteTarot/78.jpg', 0, 0, 35, 62);
+        ctxs.rotate(-deg);
+        ctxs.translate(-rx, -ry);
+      } else {
+        x = Math.random() * 190 + 50;
+        y = Math.random() * 200 + 20;
+        deg = Math.random() * Math.PI;
+        rx = x + 50;
+        ry = y + 46;
+        ctxs.translate(rx, ry);
+        ctxs.rotate(deg);
+        ctxs.drawImage('../../image/waiteTarot/78.jpg', 25, -46, 45, 80);
+        ctxs.rotate(-deg);
+        ctxs.translate(-rx, -ry);
+      }
+    }
+    ctxs.draw();
+  },
+  deal: function(){
+    var width = this.data.clientWidth;
+    var height = this.data.clientHeight;
+    ctxs.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
+    ctxs.draw();
+    this.setData({
+      drawPanel: false
+    });
   }
 });
 

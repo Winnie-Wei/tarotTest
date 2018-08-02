@@ -1,23 +1,22 @@
 <image class="bg-image" src='../../image/pic/bg.jpg' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></image>
 
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}"></canvas>
-<!-- 
-<view class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag">
-  <view class='card-num' style='left:{{item.left}}px;top:{{item.top}}px;z-index:3;'>{{index+1}}</view>
-  <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};"></image>
-  <image id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};" bindtap="turnback"></image>
-</view> -->
 
+<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}};position:absolute;top:0;"></canvas>
 
-<view class='scroll-container'>
+<view class='scroll-container' hidden='drawPanel'>
+  <image src='../../image/icon/arrow.png' class='drag-arrow'></image>
   <scroll-view scroll-x="{{scrollkey}}" class="scroll-box" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}}">
     <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag" bindtouchend="dragEnd">
-      <image data-index="{{index}}" id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};position:{{item.position}};"></image>
-      <image data-index="{{index}}" data-dragkey="{{item.dragkey}}" id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" bindtap="turnback"></image>
-      <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left}}px;top:{{item.top}}px;position:{{item.position}};z-index:2;'>{{index+1}}</view>
+      <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};position:{{item.position}};"></image>
+      <image data-dragkey="{{item.dragkey}}" id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" bindtap="turnback"></image>
+      <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left}}px;top:{{item.top}}px;position:{{item.position}};'>{{index+1}}</view>
     </view>
   </scroll-view>
 </view>
+
+<image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image>
+<image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>
 
 
 <!-- <button class='share' type='primary' bindtap='share' >生成分享图</button>
