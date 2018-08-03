@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/startDraw/startDraw",
     "pages/drawCard/drawCard",
     "pages/createImg/createImg",
     "pages/canvas/canvas",
@@ -32,7 +33,7 @@
         "selectedIconPath": "image/icon/card.png"
       },
       {
-        "pagePath": "pages/drawCard/drawCard",
+        "pagePath": "pages/startDraw/startDraw",
         "text": "抽牌",
         "iconPath": "image/icon/other.png",
         "selectedIconPath": "image/icon/other.png"
@@ -42,8 +43,7 @@
         "text": "testImg",
         "iconPath": "image/icon/other.png",
         "selectedIconPath": "image/icon/other.png"
-      }
-      ,
+      },
       {
         "pagePath": "pages/canvas/canvas",
         "text": "canvas",

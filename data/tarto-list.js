@@ -50,14 +50,14 @@ var noteItem = [
 
 var top = app.globalData.clientHeight-110,imgList = [];
 var name = ["queen", "king", "swords10", "couple", "angel", "wands1", "man", "wheel", "women", "justic"];
-for (var i = 0; i < name.length; i++ ) {
-  imgList.push({ "id": name[i], "src": "../../image/waiteTarot/" + name[i] + ".jpg", "left": i * 40, "top": top, "zindexF": 12, "zindexB": 11, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false,"dragkey":0 })
-};
+// for (var i = 0; i < name.length; i++ ) {
+//   imgList.push({ "id": name[i], "src": "../../image/waiteTarot/" + name[i] + ".jpg", "left": i * 40, "top": top, "zindexF": 12, "zindexB": 11, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false,"dragkey":0 })
+// };
 
 
   // 定义数据出口  
   module.exports = {
     postList: localData,
     noteItem: noteItem,
-    imgList: imgList
+    nameList: name
   }

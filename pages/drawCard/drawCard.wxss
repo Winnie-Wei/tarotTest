@@ -1,7 +1,9 @@
+page{
+  height:100%;
+}
 .scroll-container{
   width: 100%;
   overflow: hidden;
-
 }
 .card-view {
   display:inline-block;
@@ -11,6 +13,7 @@
   position: fixed;
   top:0;
   left:0;
+  height:100%;
 }
 .card-view image {
   width: 60px;

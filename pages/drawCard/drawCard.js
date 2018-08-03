@@ -10,18 +10,19 @@ Page({
     top: '',
     left: '',
     imgList: [],
-    isChecked: '',
     prurl: '',
     cardArr: [],
     cardlist: [],
     scrollkey: true,
-    drawPanel:true
+    drawPanel:true,
+    nameList:[],
+    shuffleCardCanvas:false,
   },
   onLoad: function() {
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
-      imgList: tarotList.imgList
+      nameList: tarotList.nameList
     });
   },
   drag: function(e) {
@@ -104,7 +105,7 @@ Page({
     var that = this;
     return new Promise((resolve, reject) => {
       var width = this.data.clientWidth;
-      var height = this.data.clientHeight
+      var height = this.data.clientHeight+82;
       ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
       for (var i = 0; i < data.cardlist.length; i++) {
         var mleft = data.cardlist[i].clientX - 30;
@@ -121,7 +122,7 @@ Page({
           x: 0,
           y: 0,
           width: that.data.clientWidtht,
-          height: that.data.clientHeight,
+          height: that.data.clientHeight+82,
           destWidth: that.data.clientWidtht,
           destHeight: that.data.clientHeight,
           canvasId: 'img',
@@ -142,7 +143,6 @@ Page({
     })
   },
   turnback: function(e) {
-    console.log(e)
     if (e.currentTarget.dataset.dragkey == 0) {
       for (var i = 0; i < this.data.imgList.length; i++) {
         var top = 'imgList[' + i + '].top';
@@ -196,44 +196,16 @@ Page({
     }
   },
   shuffle: function () {
-    for (var i = 0; i < 78; i++) {
-      var x = 0,
-        y = 0,
-        deg = 0,
-        rx = 0,
-        ry = 0;
-      if (this.data.clientWidth < 350) {
-        x = Math.random() * 160 + 50;
-        y = Math.random() * 160 + 15;
-        deg = Math.random() * Math.PI;
-        rx = x + 50;
-        ry = y + 46;
-        ctxs.translate(rx, ry);
-        ctxs.rotate(deg);
-        ctxs.drawImage('../../image/waiteTarot/78.jpg', 0, 0, 35, 62);
-        ctxs.rotate(-deg);
-        ctxs.translate(-rx, -ry);
-      } else {
-        x = Math.random() * 190 + 50;
-        y = Math.random() * 200 + 20;
-        deg = Math.random() * Math.PI;
-        rx = x + 50;
-        ry = y + 46;
-        ctxs.translate(rx, ry);
-        ctxs.rotate(deg);
-        ctxs.drawImage('../../image/waiteTarot/78.jpg', 25, -46, 45, 80);
-        ctxs.rotate(-deg);
-        ctxs.translate(-rx, -ry);
-      }
-    }
-    ctxs.draw();
+    this.setData({
+      imgList: randomCard(this.data.nameList),
+      drawPanel: true,
+      shuffleCardCanvas: false
+    });
+    shuffleCard();
   },
   deal: function(){
-    var width = this.data.clientWidth;
-    var height = this.data.clientHeight;
-    ctxs.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
-    ctxs.draw();
     this.setData({
+      shuffleCardCanvas: true,
       drawPanel: false
     });
   }
@@ -270,4 +242,52 @@ function extendObj() { //扩展对象
     }
   }
   return temp;
+};
+
+function shuffleCard(){  //洗牌动画
+  for (var i = 0; i < 60; i++) {
+    var x = 0,
+      y = 0,
+      deg = 0,
+      rx = 0,
+      ry = 0;
+    if (app.globalData.clientWidth < 350) {
+      x = Math.random() * 160 + 50;
+      y = Math.random() * 160 + 15;
+      deg = Math.random() * Math.PI;
+      rx = x + 50;
+      ry = y + 46;
+      ctxs.translate(rx, ry);
+      ctxs.rotate(deg);
+      ctxs.drawImage('../../image/waiteTarot/78.jpg', 0, 0, 35, 62);
+      ctxs.rotate(-deg);
+      ctxs.translate(-rx, -ry);
+    } else {
+      x = Math.random() * 190 + 50;
+      y = Math.random() * 200 + 20;
+      deg = Math.random() * Math.PI;
+      rx = x + 50;
+      ry = y + 46;
+      ctxs.translate(rx, ry);
+      ctxs.rotate(deg);
+      ctxs.drawImage('../../image/waiteTarot/78.jpg', 25, -46, 45, 80);
+      ctxs.rotate(-deg);
+      ctxs.translate(-rx, -ry);
+    }
+  }
+  ctxs.draw();
+}
+
+function randomCard(arr) {  //打乱牌顺序
+  let  larr = arr;
+  let i = larr.length;
+  while (i) {
+    let j = Math.floor(Math.random() * i--);
+    [larr[j], larr[i]] = [larr[i], larr[j]];
+  }
+  var arrtemp = [];
+  for (var k = 0; k < larr.length; k++) {
+    arrtemp.push({ "id": larr[k], "src": "../../image/waiteTarot/" + larr[k] + ".jpg", "left": k * 40, "top": app.globalData.clientHeight-110, "zindexF": 12, "zindexB": 11, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false, "dragkey": 0 })
+  };
+  return arrtemp;
 }
