@@ -1,66 +1,66 @@
-// pages/startDraw/startDraw.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    typeArray: ['通用伟特塔罗', '新视角伟特塔罗牌'], 
+    object_typeArray: [
+      {
+        id: 0,
+        name: '通用伟特塔罗'
+      },
+      {
+        id: 1,
+        name: '新视角伟特塔罗牌'
+      }
+    ],
+    typeIndex: 0,
+    numArray:["78张牌","大阿尔卡那","小阿尔卡那"],
+    object_numArray: [
+      {
+        id: 0,
+        name: '78张牌'
+      },
+      {
+        id: 1,
+        name: '大阿尔卡那'
+      },
+      {
+        id: 2,
+        name: '小阿尔卡那'
+      }
+    ],
+    numIndex: 0,
+    rotateIndex: '',
+    animationData: {}
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
   onReady: function () {
-  
+    // 创建动画
+    var animation = wx.createAnimation({
+      duration: 800,
+      timingFunction: "linear"
+    })
+    this.animation = animation
+    // 执行旋转或者点击图片旋转(如果你想要点击就在图片上添加点击事件我默认是添加的)
+    // this.refreshList()
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  refreshList: function () {
+    //连续动画需要添加定时器,所传参数每次+1就行
+    this.timeInterval = setInterval(function () {
+      this.data.rotateIndex = this.data.rotateIndex + 1;
+      this.animation.rotate(360 * (this.data.rotateIndex)).step()
+      this.setData({
+        animationData: this.animation.export()
+      })
+    }.bind(this), 500)
+    // 请求API接口或者别的操作
+    this.request()
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  pickType: function (e) {
+    this.setData({
+      typeIndex: e.detail.value
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  pickNum: function (e) {
+    this.setData({
+      numIndex: e.detail.value
+    })
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })

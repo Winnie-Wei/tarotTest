@@ -26,7 +26,6 @@ Page({
     });
   },
   drag: function(e) {
-    console.log(e)
     if (e.currentTarget.dataset.dragkey == 0) {
       return;
     }

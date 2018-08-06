@@ -1,3 +1,21 @@
-<!--pages/startDraw/startDraw.wxml-->
-<text>pages/startDraw/startDraw.wxml</text>
-<navigator url='../../pages/drawCard/drawCard'>gogogoogogogo</navigator>
+<image src='../../image/pic/star.jpg' class='startDraw-bg' mode="aspectFit" animation="{{animationData}}"
+   bindtap='refreshList'></image>
+<view class='pick-type'>
+  <view class="pick-content">
+    <picker bindchange="pickType" value="{{typeIndex}}" range="{{typeArray}}">
+      <view class="picker">
+        <span>牌类型：</span>
+        <span>{{typeArray[typeIndex]}}</span>
+      </view>
+    </picker>
+  </view>
+  <view class="pick-content">
+    <picker bindchange="pickNum" value="{{numIndex}}" range="{{numArray}}">
+      <view class="picker">
+        <span>牌张数：</span>
+        <span>{{numArray[numIndex]}}</span>
+      </view>
+    </picker>
+  </view>
+  <navigator url='../../pages/drawCard/drawCard' class='startDraw-btn'>开始占卜</navigator>
+</view>
