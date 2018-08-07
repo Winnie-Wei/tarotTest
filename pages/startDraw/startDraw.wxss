@@ -9,6 +9,12 @@ page{
   right:0;
   margin:0px auto;
   width: 400rpx;
+  animation:bgRoute 4.5s infinite linear;
+	-webkit-animation:bgRoute 4.5s infinite linear;
+}
+@keyframes bgRoute {
+  from   { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
 }
 
 .pick-type{
@@ -22,7 +28,7 @@ page{
   width:100%;
   height:50px;
   line-height: 50px;
-  color:rgb(132, 156, 180);
+  color:rgb(44, 51, 58);
   padding-left:29%;
 }
 .startDraw-btn{
@@ -30,8 +36,8 @@ page{
   height:38px;
   line-height: 38px;
   text-align: center;
-  background: linear-gradient(to bottom right, rgba(69, 130, 243, 0.753) , rgba(95, 14, 150, 0.767));
+  background: linear-gradient(to bottom right, rgba(109, 119, 122, 1) , rgba(6, 4, 7, 19));
   margin: 25px auto;
-  border-radius:10px;
+  border-radius:8px;
   color: #fff;
 }

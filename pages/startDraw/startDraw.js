@@ -31,28 +31,27 @@ Page({
     rotateIndex: '',
     animationData: {}
   },
-  onReady: function () {
-    // 创建动画
-    var animation = wx.createAnimation({
-      duration: 800,
-      timingFunction: "linear"
-    })
-    this.animation = animation
-    // 执行旋转或者点击图片旋转(如果你想要点击就在图片上添加点击事件我默认是添加的)
-    // this.refreshList()
-  },
-  refreshList: function () {
-    //连续动画需要添加定时器,所传参数每次+1就行
-    this.timeInterval = setInterval(function () {
-      this.data.rotateIndex = this.data.rotateIndex + 1;
-      this.animation.rotate(360 * (this.data.rotateIndex)).step()
-      this.setData({
-        animationData: this.animation.export()
-      })
-    }.bind(this), 500)
-    // 请求API接口或者别的操作
-    this.request()
-  },
+  // onReady: function () {
+  //   // 创建动画
+  //   var animation = wx.createAnimation({
+  //     duration: 5000,
+  //     delay:0,
+  //     timingFunction: "linear"
+  //   })
+  //   this.animation = animation;
+  //   // 执行旋转或者点击图片旋转(如果你想要点击就在图片上添加点击事件我默认是添加的)
+  //   this.refreshList()
+  // },
+  // refreshList: function () {
+  //   //连续动画需要添加定时器,所传参数每次+1就行
+  //   this.timeInterval = setInterval(function () {
+  //     //this.data.rotateIndex = this.data.rotateIndex + 1;
+  //     this.animation.rotateY(360 * (++this.data.rotateIndex)).step()
+  //     this.setData({
+  //       animationData: this.animation.export()
+  //     })
+  //   }.bind(this), 5000)
+  // },
   pickType: function (e) {
     this.setData({
       typeIndex: e.detail.value
@@ -63,4 +62,11 @@ Page({
       numIndex: e.detail.value
     })
   },
+  startDraw: function(){
+    // if (this.timeInterval > 0) {
+    //   clearInterval(this.timeInterval)
+    //   this.timeInterval = 0
+    // }
+
+  }
 })

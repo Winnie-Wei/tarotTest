@@ -17,5 +17,5 @@
       </view>
     </picker>
   </view>
-  <navigator url='../../pages/drawCard/drawCard' class='startDraw-btn'>开始占卜</navigator>
+  <navigator url='../../pages/drawCard/drawCard' class='startDraw-btn' bindtap='startDraw'>开始占卜</navigator>
 </view>
