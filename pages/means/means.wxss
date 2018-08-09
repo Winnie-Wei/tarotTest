@@ -1,0 +1,12 @@
+@import "../../utils/font/font.wxss";
+
+.mean-title{
+  width:100%;
+  height:60rpx;
+  display:block;
+  line-height:60rpx;
+  text-align: center;
+  color: grey;
+  font-size: 30rpx;
+  float: left;
+}

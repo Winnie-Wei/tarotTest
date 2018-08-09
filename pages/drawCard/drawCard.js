@@ -1,4 +1,4 @@
-var tarotList = require('../../data/tarto-list.js');
+var tarotList = require('../../data/tarotName.js');
 var app = getApp();
 const ctx = wx.createCanvasContext('img');
 const ctxs = wx.createCanvasContext('shuffle');
@@ -17,12 +17,16 @@ Page({
     drawPanel:true,
     nameList:[],
     shuffleCardCanvas:false,
+    isShuffle: false,
+    numArray: [{ "s": "0", "e": "78" }, { "s": "0", "e": "22" }, { "s": "22", "e": "78" }],
+    typeArray: ['通用伟特塔罗', '新视角伟特塔罗牌'] 
   },
-  onLoad: function() {
+  onLoad: function(options) {
+    console.log(options)
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
-      nameList: tarotList.nameList
+      nameList: tarotList.nameList.slice(this.data.numArray[options.num].s, this.data.numArray[options.num].e)
     });
   },
   drag: function(e) {
@@ -198,11 +202,13 @@ Page({
     this.setData({
       imgList: randomCard(this.data.nameList),
       drawPanel: true,
-      shuffleCardCanvas: false
+      shuffleCardCanvas: false,
+      isShuffle: true
     });
     shuffleCard();
   },
   deal: function(){
+    if (!this.data.isShuffle){ return;}
     this.setData({
       shuffleCardCanvas: true,
       drawPanel: false

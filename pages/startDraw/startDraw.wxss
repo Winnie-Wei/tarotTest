@@ -9,10 +9,10 @@ page{
   right:0;
   margin:0px auto;
   width: 400rpx;
-  animation:bgRoute 4.5s infinite linear;
-	-webkit-animation:bgRoute 4.5s infinite linear;
+  animation:bgrotate 4s infinite linear;
+	-webkit-animation:bgrotate 4s infinite linear;
 }
-@keyframes bgRoute {
+@keyframes bgrotate {
   from   { transform: rotateY(0deg); }
   to { transform: rotateY(360deg); }
 }
@@ -29,7 +29,7 @@ page{
   height:50px;
   line-height: 50px;
   color:rgb(44, 51, 58);
-  padding-left:29%;
+  padding-left:25%;
 }
 .startDraw-btn{
   width:132px;

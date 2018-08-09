@@ -29,3 +29,8 @@
   color: grey;
   font-size: 30rpx;
 }
+
+.view-panel{
+  height:145px;
+  float: left;
+}

@@ -1,11 +1,11 @@
 {
   "pages": [
+    "pages/means/means",
     "pages/startDraw/startDraw",
     "pages/drawCard/drawCard",
     "pages/createImg/createImg",
     "pages/canvas/canvas",
     "pages/notes/notes",
-    "pages/means/means",
     "pages/cardDetail/cardDetail",
     "pages/noteDetail/noteDetail",
     "pages/index/index",
