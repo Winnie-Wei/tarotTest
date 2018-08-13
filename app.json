@@ -1,15 +1,17 @@
 {
   "pages": [
-    "pages/means/means",
-    "pages/startDraw/startDraw",
     "pages/drawCard/drawCard",
+    "pages/startDraw/startDraw",
+    "pages/drawCard1/drawCard1",
     "pages/createImg/createImg",
     "pages/canvas/canvas",
     "pages/notes/notes",
+    "pages/means/means",
     "pages/cardDetail/cardDetail",
     "pages/noteDetail/noteDetail",
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "component/card/card"
   ],
   "window": {
     "backgroundTextStyle": "light",
