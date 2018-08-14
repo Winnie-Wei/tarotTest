@@ -10,8 +10,7 @@
     "pages/cardDetail/cardDetail",
     "pages/noteDetail/noteDetail",
     "pages/index/index",
-    "pages/logs/logs",
-    "component/card/card"
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "light",

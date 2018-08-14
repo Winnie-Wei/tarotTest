@@ -1,5 +1,0 @@
-<view data-dragkey="{{item.dragkey}}" class="card-view" bindtouchmove="drag" bindtouchend="dragEnd">
-  <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};position:{{item.position}};"></image>
-  <image data-dragkey="{{item.dragkey}}" id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" bindtap="turnback"></image>
-  <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left}}px;top:{{item.top}}px;position:{{item.position}};'>{{index+1}}</view>
-</view>

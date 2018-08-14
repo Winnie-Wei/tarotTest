@@ -1,0 +1,4 @@
+<view bindtouchmove="drag" bindtouchend="dragEnd">
+  <image src='../../image/waiteTarot/78.jpg'></image>
+  <image src='../../image/waiteTarot/78.jpg'></image>
+</view>
