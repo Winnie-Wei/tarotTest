@@ -4,22 +4,12 @@
 
 <canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden="{{shuffleCardCanvas}}"></canvas>
 
-<!-- <view class='scroll-container' hidden='{{drawPanel}}'>
-  <image src='../../image/icon/arrow.png' class='drag-arrow'></image>
+<view class='scroll-container' hidden='{{drawPanel}}'>
+  <!-- <image src='../../image/icon/arrow.png' class='drag-arrow'></image> -->
   <scroll-view scroll-x="{{scrollkey}}" class="scroll-box" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 150px;">
     <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag" bindtouchend="dragEnd">
       <image id='{{item.id}}' class="imgcss t back" src='{{item.src}}' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexB}};transform:{{item.transB}};position:{{item.position}};"></image>
       <image data-dragkey="{{item.dragkey}}" id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" bindtap="turnback"></image>
-      <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left}}px;top:{{item.top}}px;position:{{item.position}};'>{{index+1}}</view>
-    </view>
-  </scroll-view>
-</view> -->
-
-
-<view class='scroll-container' hidden='{{drawPanel}}'>
-  <scroll-view scroll-x="{{scrollkey}}" class="scroll-box" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: {{clientHeight?clientHeight+'px':'auto'}};">
-    <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
-      <image data-index="{{index}}" data-dragkey="{{item.dragkey}}" id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" bindtap="turnback"></image>
       <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left}}px;top:{{item.top}}px;position:{{item.position}};'>{{index+1}}</view>
     </view>
   </scroll-view>

@@ -27,8 +27,8 @@ Page({
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
-      nameList: tarotList.nameList.slice(this.data.numArray[0].s, this.data.numArray[0].e),
-      cardType: this.data.typeArray[0]
+      nameList: tarotList.nameList.slice(this.data.numArray[options.num].s, this.data.numArray[options.num].e),
+      cardType: this.data.typeArray[options.type]
     });
   },
   drag: function(e) {
@@ -148,19 +148,18 @@ Page({
     })
   },
   turnback: function(e) {
-    console.log(e)
     if (e.currentTarget.dataset.dragkey == 0) {
       for (var i = 0; i < this.data.imgList.length; i++) {
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
         if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
           this.setData({
-            [top]: app.globalData.clientHeight - 150,
+            [top]: 0,//app.globalData.clientHeight - 150,
             [dragkey]: 1
           });
           break;
         } else if (this.data.imgList[i].dragkey == 0) { //其他的牌保持排列
-          var val = app.globalData.clientHeight - 110;
+          var val = 40;//app.globalData.clientHeight - 110;
           this.setData({
             [top]: val,
             [dragkey]: 0
@@ -296,7 +295,7 @@ function randomCard(arr,cardtype) {  //打乱牌顺序
   var arrtemp = [];
   for (var k = 0; k < larr.length; k++) {
     var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg";//app.globalData.clientHeight-110
-    arrtemp.push({ "id": larr[k], "src": imgSrc, "left": k * 40, "top": app.globalData.clientHeight - 110, "zindexF": 12, "zindexB": 11, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false, "dragkey": 0 })
+    arrtemp.push({ "id": larr[k], "src": imgSrc, "left": k * 40, "top": 40, "zindexF": 12, "zindexB": 11, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false, "dragkey": 0 })
   };
   return arrtemp;
 }
