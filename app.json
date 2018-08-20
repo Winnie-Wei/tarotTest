@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/drawCard/drawCard",
-    "pages/startDraw/startDraw",
     "pages/drawCard1/drawCard1",
+    "pages/startDraw/startDraw",
     "pages/createImg/createImg",
     "pages/canvas/canvas",
     "pages/notes/notes",

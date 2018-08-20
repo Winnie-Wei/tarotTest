@@ -1,5 +1,6 @@
 {
   "usingComponents": {
     "card-block": "../../component/cardblock/cardblock"
-  }
+  },
+  "disableScroll": true
 }

@@ -27,8 +27,8 @@ Page({
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
-      nameList: tarotList.nameList.slice(this.data.numArray[options.num].s, this.data.numArray[options.num].e),
-      cardType: this.data.typeArray[options.type]
+      nameList: tarotList.nameList.slice(this.data.numArray[0].s, this.data.numArray[0].e),
+      cardType: this.data.typeArray[0]
     });
   },
   drag: function(e) {

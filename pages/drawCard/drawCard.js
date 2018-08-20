@@ -20,7 +20,8 @@ Page({
     isShuffle: false,
     numArray: [{ "s": "0", "e": "78" }, { "s": "0", "e": "22" }, { "s": "22", "e": "78" }],
     typeArray: ['waiteTarot', 'newSight'],
-    cardType: ''
+    cardType: '',
+    cardblock: [] //生成可以拖拽的卡片
   },
   onLoad: function(options) {
     console.log(options)
@@ -150,6 +151,7 @@ Page({
   turnback: function(e) {
     console.log(e)
     if (e.currentTarget.dataset.dragkey == 0) {
+      var cardblockTemp = this.data.cardblock;
       for (var i = 0; i < this.data.imgList.length; i++) {
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
@@ -160,6 +162,7 @@ Page({
             [dragkey]: 1,
             [show]: false
           });
+          cardblockTemp.push(this.data.imgList[i]);
           break;
         } else if (this.data.imgList[i].dragkey == 0) { //其他的牌保持排列
           var val = app.globalData.clientHeight - 110;
@@ -170,6 +173,10 @@ Page({
           });
         }
       }
+      this.setData({
+        cardblock: cardblockTemp
+      });
+      console.log(this.data.cardblock)
     } else if (e.currentTarget.dataset.dragkey == 1) {
       for (var i = 0; i < this.data.imgList.length; i++) {
         var top = 'imgList[' + i + '].top';
@@ -299,7 +306,7 @@ function randomCard(arr,cardtype) {  //打乱牌顺序
   var arrtemp = [];
   for (var k = 0; k < larr.length; k++) {
     var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg";//app.globalData.clientHeight-110
-    arrtemp.push({ "id": larr[k], "src": imgSrc, "left": k * 40, "top": app.globalData.clientHeight - 110, "zindexF": 12, "zindexB": 11, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false, "dragkey": 0 ,"show": true})
+    arrtemp.push({ "id": larr[k], "src": imgSrc, "left": k * 60, "top": app.globalData.clientHeight - 110, "zindexF": 2*k, "zindexB": k, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false, "dragkey": 0 ,"show": true})
   };
   return arrtemp;
 }
