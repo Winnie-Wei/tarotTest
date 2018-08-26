@@ -22,13 +22,13 @@ page{
   position: absolute;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  transition: all 0.1s linear;
+  /* transition: all 0.1s linear; */
 }
 
 .card-num{
   color:#F5DEB3;
   position:absolute;
-  transition: all 0.1s linear;
+  /* transition: all 0.1s linear; */
   z-index:12;
 }
 .drag-arrow{

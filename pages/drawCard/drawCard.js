@@ -14,11 +14,20 @@ Page({
     cardArr: [],
     cardlist: [],
     scrollkey: true,
-    drawPanel:true,
-    nameList:[],
-    shuffleCardCanvas:false,
+    drawPanel: true,
+    nameList: [],
+    shuffleCardCanvas: false,
     isShuffle: false,
-    numArray: [{ "s": "0", "e": "78" }, { "s": "0", "e": "22" }, { "s": "22", "e": "78" }],
+    numArray: [{
+      "s": "0",
+      "e": "78"
+    }, {
+      "s": "0",
+      "e": "22"
+    }, {
+      "s": "22",
+      "e": "78"
+    }],
     typeArray: ['waiteTarot', 'newSight'],
     cardType: '',
     cardblock: [] //生成可以拖拽的卡片
@@ -111,7 +120,7 @@ Page({
     var that = this;
     return new Promise((resolve, reject) => {
       var width = this.data.clientWidth;
-      var height = this.data.clientHeight+82;
+      var height = this.data.clientHeight + 82;
       ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
       for (var i = 0; i < data.cardlist.length; i++) {
         var mleft = data.cardlist[i].clientX - 30;
@@ -128,7 +137,7 @@ Page({
           x: 0,
           y: 0,
           width: that.data.clientWidtht,
-          height: that.data.clientHeight+82,
+          height: that.data.clientHeight + 82,
           destWidth: that.data.clientWidtht,
           destHeight: that.data.clientHeight,
           canvasId: 'img',
@@ -148,80 +157,77 @@ Page({
       resolve();
     })
   },
-  turnback: function(e) {
-    console.log(e)
+  getLeftVal: function(id) {
+    return new Promise((resolve, reject) => {
+      var idTemp = "#" + id,
+        leftTemp = 0;
+      wx.createSelectorQuery().select(idTemp).boundingClientRect(function(rect) {
+        leftTemp = rect.left;
+        resolve(leftTemp);
+      }).exec()
+    });
+  },
+  creatNewCard: function(e, leftTemp) {
     if (e.currentTarget.dataset.dragkey == 0) {
       var cardblockTemp = this.data.cardblock;
+      console.log(cardblockTemp)
       for (var i = 0; i < this.data.imgList.length; i++) {
+        var left = 'imgList[' + i + '].left';
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
         var show = 'imgList[' + i + '].show';
         if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
           this.setData({
-            [top]: app.globalData.clientHeight - 150,
+            [left]: leftTemp,
             [dragkey]: 1,
-            [show]: false
+            [show]: true,
+            scrollkey: false,
+            [top]: -40
           });
           cardblockTemp.push(this.data.imgList[i]);
           break;
-        } else if (this.data.imgList[i].dragkey == 0) { //其他的牌保持排列
-          var val = app.globalData.clientHeight - 110;
-          this.setData({
-            [top]: val,
-            [dragkey]: 0,
-            [show]: true
-          });
         }
       }
+      console.log(cardblockTemp)
       this.setData({
         cardblock: cardblockTemp
       });
-      console.log(this.data.cardblock)
-    } else if (e.currentTarget.dataset.dragkey == 1) {
-      for (var i = 0; i < this.data.imgList.length; i++) {
-        var top = 'imgList[' + i + '].top';
-        var dragkey = 'imgList[' + i + '].dragkey';
-        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
-          this.setData({
-            [top]: app.globalData.clientHeight - 110,
-            [dragkey]: 0
-          });
-          break;
-        }
-      }
-    } else if (e.currentTarget.dataset.dragkey == 2) {
-      for (var i = 0; i < this.data.imgList.length; i++) {
-        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
-          var zindexF = 'imgList[' + i + '].zindexF';
-          var zindexB = 'imgList[' + i + '].zindexB';
-          var transF = 'imgList[' + i + '].transF';
-          var transB = 'imgList[' + i + '].transB';
-          var mposition = 'imgList[' + i + '].position';
-          var shownum = 'imgList[' + i + '].shownum';
-          this.setData({
-            [zindexF]: 11,
-            [zindexB]: 12,
-            [transF]: "rotateY(180deg)",
-            [transB]: "rotateY(0deg)",
-            [mposition]: "fixed",
-            [shownum]: true
-          });
-          break;
-        }
-      }
     }
   },
-  shuffle: function () {
+  turnback: function(e) {
+    console.log(e)
+    this.getLeftVal(e.currentTarget.id).then(data => {
+      this.creatNewCard(e, data);
+    })
+  },
+  updateCardList: function(e) {
+    var imgListTemp = this.data.imgList;
+    for (var i = 0; i < imgListTemp.length; i++) {
+      if (imgListTemp[i].id + "back" == e.detail.id) {
+        imgListTemp[i].show = false;
+        imgListTemp[i].dragkey = 0;
+        imgListTemp[i].left = i * 62;
+      }
+    }
     this.setData({
-      imgList: randomCard(this.data.nameList,this.data.cardType),
+      cardblock: e.detail.arr,
+      imgList: imgListTemp,
+      scrollkey: (e.detail.arr.length == 0) ? true : false
+    })
+  },
+  shuffle: function() {
+    this.setData({
+      imgList: randomCard(this.data.nameList, this.data.cardType),
       drawPanel: true,
       shuffleCardCanvas: false,
       isShuffle: true
     });
     shuffleCard(this.data.cardType);
   },
-  deal: function(){
-    if (!this.data.isShuffle){ return;}
+  deal: function() {
+    if (!this.data.isShuffle) {
+      return;
+    }
     this.setData({
       shuffleCardCanvas: true,
       drawPanel: false
@@ -262,7 +268,7 @@ function extendObj() { //扩展对象
   return temp;
 };
 
-function shuffleCard(cardtype){  //洗牌动画
+function shuffleCard(cardtype) { //洗牌动画
   for (var i = 0; i < 60; i++) {
     var x = 0,
       y = 0,
@@ -296,8 +302,8 @@ function shuffleCard(cardtype){  //洗牌动画
   ctxs.draw();
 }
 
-function randomCard(arr,cardtype) {  //打乱牌顺序
-  let  larr = arr;
+function randomCard(arr, cardtype) { //打乱牌顺序
+  let larr = arr;
   let i = larr.length;
   while (i) {
     let j = Math.floor(Math.random() * i--);
@@ -305,8 +311,21 @@ function randomCard(arr,cardtype) {  //打乱牌顺序
   }
   var arrtemp = [];
   for (var k = 0; k < larr.length; k++) {
-    var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg";//app.globalData.clientHeight-110
-    arrtemp.push({ "id": larr[k], "src": imgSrc, "left": k * 60, "top": app.globalData.clientHeight - 110, "zindexF": 2*k, "zindexB": k, "transF": "", "transB": "rotateY(180deg)", "position": "absolute", "shownum": false, "dragkey": 0 ,"show": true})
+    var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg"; //app.globalData.clientHeight-110
+    arrtemp.push({
+      "id": larr[k],
+      "src": imgSrc,
+      "left": k * 62,
+      "top": app.globalData.clientHeight - 110,
+      "zindexF": 2 * k,
+      "zindexB": k,
+      "transF": "",
+      "transB": "rotateY(180deg)",
+      "position": "absolute",
+      "shownum": false,
+      "dragkey": 0,
+      "show": false
+    })
   };
   return arrtemp;
 }

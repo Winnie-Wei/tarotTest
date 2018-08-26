@@ -12,17 +12,17 @@
   </view>
 </view> -->
 
-<scroll-view scroll-x class='card-scroll'>
-    <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}" bindtouchmove="drag" bindtouchend="dragEnd">
-      <image data-dragkey="{{item.dragkey}}" id='{{item.id + "back"}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:40px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" bindtap="turnback"></image>
-      <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left}}px;top:40px;position:{{item.position}};z-index:{{item.zindexF}};'>{{index+1}}</view>
+<scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}'>
+    <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
+      <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:40px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" hidden='{{item.show}}' bindtap="turnback"></image>
+      <view class='card-num' hidden='{{item.shownum}}' hidden='{{item.show}}' style='left:{{item.left}}px;top:40px;position:{{item.position}};z-index:{{item.zindexF}};'>{{index+1}}</view>
     </view>
 </scroll-view>
 
 <view>
-  <block wx:for="{{cardblock}}" wx:key="{{index}}">
-  <card-block card-item="item"></card-block>
-  </block>
+  <card-block card-block="{{cardblock}}" bind:updateEvent="updateCardList">
+    <!-- <card-block card-item="{{item}}"></card-block> -->
+  </card-block>
 </view>
 
 <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image>

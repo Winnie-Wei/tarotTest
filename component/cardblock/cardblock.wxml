@@ -1,5 +1,8 @@
-<view class="card-view card-block-content">
-  <image data-dragkey="{{cardItem.dragkey}}" id='{{cardItem.id + "back"}}' class="imgcss t font" src='{{cardItem.src}}' style="left:{{cardItem.left%clientWidth}}px;top:-40px;z-index:{{cardItem.zindexF-1}};transform:{{cardItem.transF}};position:{{cardItem.position}};"></image>
-  <image src='../../image/waiteTarot/78.jpg' data-dragkey="{{cardItem.dragkey}}" id='{{cardItem.id + "back"}}' class="imgcss t font"style="left:{{cardItem.left%clientWidth}}px;top:-40px;z-index:{{cardItem.zindexF}};transform:{{cardItem.transF}};position:{{cardItem.position}};"></image>
-  <view class='card-num' style='left:{{cardItem.left%clientWidth}}px;top:-40px;position:{{cardItem.position}};z-index: {{cardItem.zindexF}}'>{{cardItem.zindexF/2+1}}</view>
+<view wx:for="{{cardBlock}}" wx:key="{{index}}">
+  <view class="card-view card-block-content" bindtouchmove="drag" bindtouchend="dragEnd">
+    <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='{{item.src}}' style="left:{{item.left%clientWidth}}px;top:{{item.top}}px;z-index:{{item.zindexF-1}};transform:{{item.transF}};position:{{item.position}};"></image>
+    <image src='../../image/waiteTarot/78.jpg' data-dragkey="{{item.dragkey}}" data-index="{{index}}" id='{{item.id + "back"}}' class="imgcss t font" style="left:{{item.left%clientWidth}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};"
+      bindtap="tapBack"></image>
+    <view class='card-num' style='left:{{item.left%clientWidth}}px;top:{{item.top}}px;position:{{item.position}};z-index: {{item.zindexF}}'>{{item.zindexF/2+1}}</view>
+  </view>
 </view>
