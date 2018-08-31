@@ -11,6 +11,12 @@
 
   </view>
 </view> -->
+<movable-area style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;">
+  <!-- <movable-view x="{{x}}" y="{{y}}" direction="all">text</movable-view> -->
+  <card-block card-block="{{cardblock}}" bind:updateEvent="updateCardList">
+    <!-- <card-block card-item="{{item}}"></card-block> -->
+  </card-block>
+</movable-area>
 
 <scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}'>
     <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
@@ -19,11 +25,11 @@
     </view>
 </scroll-view>
 
-<view>
+
+<!-- <view>
   <card-block card-block="{{cardblock}}" bind:updateEvent="updateCardList">
-    <!-- <card-block card-item="{{item}}"></card-block> -->
   </card-block>
-</view>
+</view> -->
 
 <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image>
 <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>

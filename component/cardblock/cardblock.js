@@ -34,21 +34,21 @@ Component({
     },
     drag: function(e) {
       console.log(e);
-      for (var i = 0; i < this.data.cardBlock.length; i++) {
-        if (e.target.id.indexOf(this.data.cardBlock[i].id) !== -1) {
-          var mleft = 'cardBlock[' + i + '].left';
-          var mtop = 'cardBlock[' + i + '].top';
-          var mposition = 'cardBlock[' + i + '].position';
-          var mdragKey = 'cardBlock[' + i + '].dragkey';
-          this.setData({
-            [mleft]: e.touches[0].clientX - 30,
-            [mtop]: e.touches[0].clientY - 50,
-            [mposition]: 'fixed',
-            [mdragKey]: 0,
-          });
-          break;
-        }
-      }
+      // for (var i = 0; i < this.data.cardBlock.length; i++) {
+      //   if (e.target.id.indexOf(this.data.cardBlock[i].id) !== -1) {
+      //     var mleft = 'cardBlock[' + i + '].left';
+      //     var mtop = 'cardBlock[' + i + '].top';
+      //     var mposition = 'cardBlock[' + i + '].position';
+      //     var mdragKey = 'cardBlock[' + i + '].dragkey';
+      //     this.setData({
+      //       [mleft]: e.touches[0].clientX - 30,
+      //       [mtop]: e.touches[0].clientY - 50,
+      //       [mposition]: 'fixed',
+      //       [mdragKey]: 0,
+      //     });
+      //     break;
+      //   }
+      // }
     }
   }
 })

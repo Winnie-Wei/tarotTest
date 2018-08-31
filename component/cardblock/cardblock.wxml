@@ -1,8 +1,17 @@
-<view wx:for="{{cardBlock}}" wx:key="{{index}}">
+<!-- <view wx:for="{{cardBlock}}" wx:key="{{index}}">
   <view class="card-view card-block-content" bindtouchmove="drag" bindtouchend="dragEnd">
     <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='{{item.src}}' style="left:{{item.left%clientWidth}}px;top:{{item.top}}px;z-index:{{item.zindexF-1}};transform:{{item.transF}};position:{{item.position}};"></image>
     <image src='../../image/waiteTarot/78.jpg' data-dragkey="{{item.dragkey}}" data-index="{{index}}" id='{{item.id + "back"}}' class="imgcss t font" style="left:{{item.left%clientWidth}}px;top:{{item.top}}px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};"
       bindtap="tapBack"></image>
     <view class='card-num' style='left:{{item.left%clientWidth}}px;top:{{item.top}}px;position:{{item.position}};z-index: {{item.zindexF}}'>{{item.zindexF/2+1}}</view>
   </view>
+</view> -->
+
+<view wx:for="{{cardBlock}}" wx:key="{{index}}">
+  <movable-view x="{{item.left%clientWidth}}" y="{{item.top}}px" direction="all" class="card-view card-block-content" bindtouchmove="drag" style='position: absolute;'>
+    <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='{{item.src}}' style="transform:{{item.transF}};"></image>
+    <image src='../../image/waiteTarot/78.jpg' data-dragkey="{{item.dragkey}}" data-index="{{index}}" id='{{item.id + "back"}}' class="imgcss t font" style="z-index:{{item.zindexF}};transform:{{item.transF}};"
+      bindtap="tapBack"></image>
+    <view class='card-num' style='z-index: {{item.zindexF}}'>{{item.zindexF/2+1}}</view>
+</movable-view>
 </view>
