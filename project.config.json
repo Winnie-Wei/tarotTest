@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.7",
+	"libVersion": "2.2.5",
 	"appid": "wx3f9becb1b4c7daac",
 	"projectname": "tarota",
 	"isGameTourist": false,

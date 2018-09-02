@@ -18,6 +18,7 @@ Page({
     nameList: [],
     shuffleCardCanvas: false,
     isShuffle: false,
+    movalbeAnimation:false, //movable-view禁止动画
     numArray: [{
       "s": "0",
       "e": "78"
@@ -157,6 +158,63 @@ Page({
       resolve();
     })
   },
+  dragMoveView: function(e){ //拖拽movable-view
+    if (e.target.dataset.dragkey == 1) {
+      var idMove = e.target.id.substring(0, e.target.id.length - 4);
+      for (var i = 0; i < this.data.imgList.length; i++) {
+        if (this.data.cardblock[i].id == idMove){
+          var dragkeyC = 'cardblock[' + i + '].dragkey';
+          this.setData({
+            [dragkeyC]: 2
+          });
+        }
+        break;
+      }
+      for (var i = 0; i < this.data.imgList.length; i++) {
+        if (this.data.imgList[i].id == idMove) {
+          var dragkeyI = 'imgList[' + i + '].dragkey';
+          this.setData({
+            [dragkeyI]: 2
+          });
+        }
+        //break;
+      }
+    }
+  },
+  dragMoveEnd: function(e){
+    console.log(e)
+    this.getLeftVal(e.currentTarget.id).then(data => {
+      console.log(data)
+    })
+  },
+  tapBack: function(e) { //点击movable-view
+    console.log(e)
+    if (e.target.dataset.dragkey == 1) {
+      var cardblockTemp = this.data.cardblock;
+      for (var i = 0; i < cardblockTemp.length; i++) {
+        var idTap = e.target.id.substring(0, e.target.id.length-4);
+        if (cardblockTemp[i].id == idTap) {
+          cardblockTemp.splice(i, 1);
+          break;
+        }
+      }
+      for (var i = 0; i < this.data.imgList.length; i++) {
+        var show = 'imgList[' + i + '].show';
+        var dragkey = 'imgList[' + i + '].dragkey';
+        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌
+          this.setData({
+            [show]: false,
+            [dragkey]: 0,
+            scrollkey: false,
+          });
+          break;
+        }
+      }
+      this.setData({
+        cardblock: cardblockTemp
+      })
+    }
+  },
   getLeftVal: function(id) {
     return new Promise((resolve, reject) => {
       var idTemp = "#" + id,
@@ -176,18 +234,27 @@ Page({
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
         var show = 'imgList[' + i + '].show';
-        if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
+        if (this.data.imgList[i].dragkey == 2){
+          cardblockTemp = cardblockTemp
+        }
+        else if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
+          console.log("1")
           this.setData({
             [left]: leftTemp,
-            [dragkey]: 1,
             [show]: true,
             scrollkey: false,
-            [top]: -40
+            [top]: this.data.clientHeight - 180,
+            [dragkey]: 1
           });
           cardblockTemp.push(this.data.imgList[i]);
           break;
         }
       }
+      var hash = {};
+      cardblockTemp = cardblockTemp.reduce(function (item, next) { //去除重复项
+        hash[next.id] ? '' : hash[next.id] = true && item.push(next);
+        return item
+      }, []);
       console.log(cardblockTemp)
       this.setData({
         cardblock: cardblockTemp

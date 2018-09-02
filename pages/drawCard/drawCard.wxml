@@ -1,28 +1,26 @@
+<!-- 背景图片 -->
 <image class="bg-image" src='../../image/pic/bg.jpg' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></image>
-
+<!-- 洗牌结束背景 -->
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></canvas>
-
+<!-- 洗牌背景 -->
 <canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden="{{shuffleCardCanvas}}"></canvas>
 
-<!-- <view class='card-content' style="width:{{clientWidth?clientWidth+'px':'auto'}};">
-  <image src='../../image/icon/arrow-left.png' class='arrow arrow-left'></image>
-  <image src='../../image/icon/arrow-right.png' class='arrow arrow-right'></image>
-  <view class='card-show' style="width:{{clientWidth?clientWidth-60+'px':'auto'}};" >
-
-  </view>
-</view> -->
+<!-- 拖拽 -->
 <movable-area style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;">
-  <!-- <movable-view x="{{x}}" y="{{y}}" direction="all">text</movable-view> -->
-  <card-block card-block="{{cardblock}}" bind:updateEvent="updateCardList">
-    <!-- <card-block card-item="{{item}}"></card-block> -->
-  </card-block>
+  <movable-view wx:for="{{cardblock}}" wx:key="{{index}}" x="{{item.left}}" y="{{item.top}}" direction="all" animation="{{movalbeAnimation}}" class="card-view">
+    <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' src='{{item.src}}' style="transform:{{item.transF}};"></image>
+    <image src='../../image/waiteTarot/78.jpg' data-dragkey="{{item.dragkey}}" data-index="{{index}}" id='{{item.id + "back"}}' style="transform:{{item.transF}};" bindtap="tapBack" bindtouchmove="dragMoveView" bindtouchend='dragMoveEnd'></image>
+    <view class='card-num' style='z-index: {{item.zindexF}}'>{{item.zindexF/2+1}}</view>
+  </movable-view>
 </movable-area>
 
+<!-- 铺牌 -->
 <scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}'>
-    <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
-      <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:40px;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" hidden='{{item.show}}' bindtap="turnback"></image>
-      <view class='card-num' hidden='{{item.shownum}}' hidden='{{item.show}}' style='left:{{item.left}}px;top:40px;position:{{item.position}};z-index:{{item.zindexF}};'>{{index+1}}</view>
-    </view>
+  <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
+    <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:0;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" hidden='{{item.show}}'
+      bindtap="turnback"></image>
+    <view class='card-num' hidden='{{item.shownum}}' hidden='{{item.show}}' style='left:{{item.left}}px;top:0;position:{{item.position}};z-index:{{item.zindexF}};'>{{index+1}}</view>
+  </view>
 </scroll-view>
 
 
