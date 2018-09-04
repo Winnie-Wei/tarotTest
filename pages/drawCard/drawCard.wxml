@@ -15,14 +15,13 @@
 </movable-area>
 
 <!-- 铺牌 -->
-<scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}'>
+<scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}' scroll-left="{{scrollLeft}}">
   <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
     <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='../../image/waiteTarot/78.jpg' style="left:{{item.left}}px;top:0;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};" hidden='{{item.show}}'
       bindtap="turnback"></image>
     <view class='card-num' hidden='{{item.shownum}}' hidden='{{item.show}}' style='left:{{item.left}}px;top:0;position:{{item.position}};z-index:{{item.zindexF}};'>{{index+1}}</view>
   </view>
 </scroll-view>
-
 
 <!-- <view>
   <card-block card-block="{{cardblock}}" bind:updateEvent="updateCardList">

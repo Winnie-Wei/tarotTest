@@ -2,7 +2,6 @@ var tarotList = require('../../data/tarotName.js');
 var app = getApp();
 const ctx = wx.createCanvasContext('img');
 const ctxs = wx.createCanvasContext('shuffle');
-var cardlist = [];
 Page({
   data: {
     clientWidth: '',
@@ -14,11 +13,12 @@ Page({
     cardArr: [],
     cardlist: [],
     scrollkey: true,
+    scrollLeft: 0,
     drawPanel: true,
     nameList: [],
     shuffleCardCanvas: false,
     isShuffle: false,
-    movalbeAnimation:false, //movable-view禁止动画
+    movalbeAnimation: false, //movable-view禁止动画
     numArray: [{
       "s": "0",
       "e": "78"
@@ -158,11 +158,24 @@ Page({
       resolve();
     })
   },
-  dragMoveView: function(e){ //拖拽movable-view
+  resetScroll: function(){
+    this.setData({
+      scrollkey: true
+    });
+
+    for (var i = 0; i < this.data.cardblock.length; i++) {
+      if (this.data.cardblock[i].dragkey == 1) {
+        this.setData({
+          scrollkey: false
+        })
+      }
+    }
+  },
+  dragMoveView: function(e) { //拖拽movable-view
     if (e.target.dataset.dragkey == 1) {
       var idMove = e.target.id.substring(0, e.target.id.length - 4);
       for (var i = 0; i < this.data.imgList.length; i++) {
-        if (this.data.cardblock[i].id == idMove){
+        if (this.data.cardblock[i].id == idMove) {
           var dragkeyC = 'cardblock[' + i + '].dragkey';
           this.setData({
             [dragkeyC]: 2
@@ -180,8 +193,9 @@ Page({
         //break;
       }
     }
+    this.resetScroll();
   },
-  dragMoveEnd: function(e){
+  dragMoveEnd: function(e) {
     console.log(e)
     this.getLeftVal(e.currentTarget.id).then(data => {
       console.log(data)
@@ -192,7 +206,7 @@ Page({
     if (e.target.dataset.dragkey == 1) {
       var cardblockTemp = this.data.cardblock;
       for (var i = 0; i < cardblockTemp.length; i++) {
-        var idTap = e.target.id.substring(0, e.target.id.length-4);
+        var idTap = e.target.id.substring(0, e.target.id.length - 4);
         if (cardblockTemp[i].id == idTap) {
           cardblockTemp.splice(i, 1);
           break;
@@ -201,11 +215,12 @@ Page({
       for (var i = 0; i < this.data.imgList.length; i++) {
         var show = 'imgList[' + i + '].show';
         var dragkey = 'imgList[' + i + '].dragkey';
+        var left = 'imgList[' + i + '].left';
         if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌
           this.setData({
             [show]: false,
             [dragkey]: 0,
-            scrollkey: false,
+            [left]: i * 62
           });
           break;
         }
@@ -214,18 +229,20 @@ Page({
         cardblock: cardblockTemp
       })
     }
+   this.resetScroll();
   },
   getLeftVal: function(id) {
     return new Promise((resolve, reject) => {
       var idTemp = "#" + id,
-        leftTemp = 0;
+        poTemp = {};
       wx.createSelectorQuery().select(idTemp).boundingClientRect(function(rect) {
-        leftTemp = rect.left;
-        resolve(leftTemp);
+        poTemp.left = rect.left;
+        poTemp.top = rect.top;
+        resolve(poTemp);
       }).exec()
     });
   },
-  creatNewCard: function(e, leftTemp) {
+  creatNewCard: function(e, opTemp) {
     if (e.currentTarget.dataset.dragkey == 0) {
       var cardblockTemp = this.data.cardblock;
       console.log(cardblockTemp)
@@ -235,12 +252,16 @@ Page({
         var dragkey = 'imgList[' + i + '].dragkey';
         var show = 'imgList[' + i + '].show';
         if (this.data.imgList[i].dragkey == 2){
-          cardblockTemp = cardblockTemp
+          for (var j = 0; j < cardblockTemp.length;j++){
+            if (cardblockTemp[j].id == this.data.imgList[i].id ){
+              cardblockTemp[j].left = opTemp.left;
+              cardblockTemp[j].top = opTemp.top;
+            }
+          }
         }
         else if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
-          console.log("1")
           this.setData({
-            [left]: leftTemp,
+            [left]: opTemp.left % this.data.clientWidth,
             [show]: true,
             scrollkey: false,
             [top]: this.data.clientHeight - 180,
@@ -251,7 +272,7 @@ Page({
         }
       }
       var hash = {};
-      cardblockTemp = cardblockTemp.reduce(function (item, next) { //去除重复项
+      cardblockTemp = cardblockTemp.reduce(function(item, next) { //去除重复项
         hash[next.id] ? '' : hash[next.id] = true && item.push(next);
         return item
       }, []);
@@ -266,6 +287,7 @@ Page({
     this.getLeftVal(e.currentTarget.id).then(data => {
       this.creatNewCard(e, data);
     })
+    
   },
   updateCardList: function(e) {
     var imgListTemp = this.data.imgList;
@@ -287,9 +309,11 @@ Page({
       imgList: randomCard(this.data.nameList, this.data.cardType),
       drawPanel: true,
       shuffleCardCanvas: false,
-      isShuffle: true
+      isShuffle: true,
+      cardblock:[],
     });
     shuffleCard(this.data.cardType);
+    this.resetScroll();
   },
   deal: function() {
     if (!this.data.isShuffle) {
@@ -297,7 +321,8 @@ Page({
     }
     this.setData({
       shuffleCardCanvas: true,
-      drawPanel: false
+      drawPanel: false,
+      scrollLeft: 0
     });
   }
 });
