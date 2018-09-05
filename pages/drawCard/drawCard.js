@@ -254,8 +254,15 @@ Page({
         if (this.data.imgList[i].dragkey == 2){
           for (var j = 0; j < cardblockTemp.length;j++){
             if (cardblockTemp[j].id == this.data.imgList[i].id ){
-              cardblockTemp[j].left = opTemp.left;
-              cardblockTemp[j].top = opTemp.top;
+              this.getLeftVal(cardblockTemp[j].id).then(async data => {
+                var op = await data
+                cardblockTemp[j].left = data[0].left;
+                cardblockTemp[j].top = data[0].top;
+                console.log(op)
+              })
+              // this.getLeftVal(cardblockTemp[j].id ).then(data => {
+                
+              // })
             }
           }
         }
