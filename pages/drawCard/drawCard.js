@@ -245,24 +245,16 @@ Page({
   creatNewCard: function(e, opTemp) {
     if (e.currentTarget.dataset.dragkey == 0) {
       var cardblockTemp = this.data.cardblock;
-      console.log(cardblockTemp)
+      console.log(e,cardblockTemp)
       for (var i = 0; i < this.data.imgList.length; i++) {
         var left = 'imgList[' + i + '].left';
         var top = 'imgList[' + i + '].top';
         var dragkey = 'imgList[' + i + '].dragkey';
         var show = 'imgList[' + i + '].show';
         if (this.data.imgList[i].dragkey == 2){
-          for (var j = 0; j < cardblockTemp.length;j++){
-            if (cardblockTemp[j].id == this.data.imgList[i].id ){
-              this.getLeftVal(cardblockTemp[j].id).then(async data => {
-                var op = await data
-                cardblockTemp[j].left = data[0].left;
-                cardblockTemp[j].top = data[0].top;
-                console.log(op)
-              })
-              // this.getLeftVal(cardblockTemp[j].id ).then(data => {
-                
-              // })
+          for (var j = 0; j < cardblockTemp.length; j++) {
+            if (cardblockTemp[j].id == this.data.imgList[i].id) {
+              cardblockTemp[j].top = 10
             }
           }
         }
@@ -275,7 +267,7 @@ Page({
             [dragkey]: 1
           });
           cardblockTemp.push(this.data.imgList[i]);
-          break;
+          //break;
         }
       }
       var hash = {};
