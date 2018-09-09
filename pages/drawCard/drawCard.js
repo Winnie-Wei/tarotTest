@@ -197,8 +197,23 @@ Page({
   },
   dragMoveEnd: function(e) {
     console.log(e)
+    var cardblockTemp = this.data.cardblock;
     this.getLeftVal(e.currentTarget.id).then(data => {
-      console.log(data)
+      var citem = cardblockTemp.filter(function (item) {
+        return item.id + "back" == e.currentTarget.id;
+      })
+      citem[0].left = data.left;
+      citem[0].top = data.top;
+      cardblockTemp.push(citem[0])
+      var hash = {};
+      cardblockTemp = cardblockTemp.reduce(function (item, next) { //去除重复项
+        hash[next.id] ? '' : hash[next.id] = true && item.push(next);
+        return item
+      }, []);
+      this.setData({
+        cardblock: cardblockTemp
+      });
+      console.log(this.data.cardblock)
     })
   },
   tapBack: function(e) { //点击movable-view
@@ -243,35 +258,42 @@ Page({
     });
   },
   creatNewCard: function(e, opTemp) {
-    if (e.currentTarget.dataset.dragkey == 0) {
-      var cardblockTemp = this.data.cardblock;
-      console.log(e,cardblockTemp)
-      for (var i = 0; i < this.data.imgList.length; i++) {
-        var left = 'imgList[' + i + '].left';
-        var top = 'imgList[' + i + '].top';
-        var dragkey = 'imgList[' + i + '].dragkey';
-        var show = 'imgList[' + i + '].show';
-        if (this.data.imgList[i].dragkey == 2){
-          for (var j = 0; j < cardblockTemp.length; j++) {
-            if (cardblockTemp[j].id == this.data.imgList[i].id) {
-              cardblockTemp[j].top = 10
+    return new Promise((resolve, reject) => {
+      if (e.currentTarget.dataset.dragkey == 0) {
+        var cardblockTemp = this.data.cardblock;
+        console.log(e,cardblockTemp)
+        for (var i = 0; i < this.data.imgList.length; i++) {
+          var left = 'imgList[' + i + '].left';
+          var top = 'imgList[' + i + '].top';
+          var dragkey = 'imgList[' + i + '].dragkey';
+          var show = 'imgList[' + i + '].show';
+          if (this.data.imgList[i].dragkey == 2){
+            for (var j = 0; j < cardblockTemp.length; j++) {
+              if (cardblockTemp[j].id == this.data.imgList[i].id) {
+                cardblockTemp[j] = cardblockTemp[j]
+              }
             }
           }
+          else if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
+            this.setData({
+              [left]: opTemp.left % this.data.clientWidth,
+              [show]: true,
+              scrollkey: false,
+              [top]: this.data.clientHeight - 180,
+              [dragkey]: 1
+            });
+            cardblockTemp.push(this.data.imgList[i]);
+            //break;
+          }
         }
-        else if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
-          this.setData({
-            [left]: opTemp.left % this.data.clientWidth,
-            [show]: true,
-            scrollkey: false,
-            [top]: this.data.clientHeight - 180,
-            [dragkey]: 1
-          });
-          cardblockTemp.push(this.data.imgList[i]);
-          //break;
-        }
+        resolve(cardblockTemp)
       }
+    })
+  },
+  makecardblockTemp: function (e, opTemp){
+    this.creatNewCard(e, opTemp).then(cardblockTemp => {
       var hash = {};
-      cardblockTemp = cardblockTemp.reduce(function(item, next) { //去除重复项
+      cardblockTemp = cardblockTemp.reduce(function (item, next) { //去除重复项
         hash[next.id] ? '' : hash[next.id] = true && item.push(next);
         return item
       }, []);
@@ -279,12 +301,12 @@ Page({
       this.setData({
         cardblock: cardblockTemp
       });
-    }
+    })
   },
   turnback: function(e) {
     console.log(e)
     this.getLeftVal(e.currentTarget.id).then(data => {
-      this.creatNewCard(e, data);
+      this.makecardblockTemp(e, data);
     })
     
   },
