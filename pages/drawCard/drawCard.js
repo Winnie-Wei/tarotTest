@@ -6,12 +6,10 @@ Page({
   data: {
     clientWidth: '',
     clientHeight: '',
+    scrollWidth: '', //scroll-view的宽
     top: '',
     left: '',
     imgList: [],
-    prurl: '',
-    cardArr: [],
-    cardlist: [],
     scrollkey: true,
     scrollLeft: 0,
     drawPanel: true,
@@ -30,7 +28,7 @@ Page({
       "e": "78"
     }],
     typeArray: ['waiteTarot', 'newSight'],
-    cardType: '',
+    cardType: '', //当前使用的牌种
     cardblock: [] //生成可以拖拽的卡片
   },
   onLoad: function(options) {
@@ -39,126 +37,11 @@ Page({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
       nameList: tarotList.nameList.slice(this.data.numArray[0].s, this.data.numArray[0].e),
-      cardType: this.data.typeArray[0]
+      cardType: this.data.typeArray[0],
+      scrollWidth: this.data.numArray[0].e * 62 
     });
   },
-  drag: function(e) {
-    if (e.currentTarget.dataset.dragkey == 0) {
-      return;
-    }
-    var that = this;
-    for (var i = 0; i < this.data.imgList.length; i++) {
-      if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) {
-        var mleft = 'imgList[' + i + '].left';
-        var mtop = 'imgList[' + i + '].top';
-        var mposition = 'imgList[' + i + '].position';
-        var mdragkey = 'imgList[' + i + '].dragkey';
-        this.setData({
-          [mleft]: e.touches[0].clientX - 30,
-          [mtop]: e.touches[0].clientY - 50,
-          [mposition]: 'fixed',
-          [mdragkey]: 2
-        });
-        break;
-      }
-    }
-
-    var card = extendObj(e.target, e.touches[0]);
-    this.data.cardArr.push(card);
-    this.data.cardArr.reverse();
-    var hash = {};
-    this.data.cardArr = this.data.cardArr.reduce(function(item, next) { //去除重复项
-      hash[next.id] ? '' : hash[next.id] = true && item.push(next);
-      return item
-    }, []);
-    console.log(this.data.cardArr);
-    this.setData({
-      cardlist: this.data.cardArr,
-      scrollkey: false
-    })
-  },
-  dragEnd: function() {
-    this.setData({
-      scrollkey: true
-    })
-  },
-  share: function(card) {
-    var that = this;
-    getImg().then(data => {
-      this.drawImg(this.data);
-    }).then(() => {
-      var length = this.data.cardlist.length;
-      for (var i = 0, j = 0; i < length; i++, j++) {
-        var sid = this.data.cardlist[j].id;
-        if (sid.indexOf("back") !== -1) {
-          this.data.cardlist.splice(j, 1);
-          j--;
-        }
-      }
-    });
-
-  },
-  save: function() {
-    var that = this;
-    wx.saveImageToPhotosAlbum({
-      filePath: that.data.prurl,
-      success(res) {
-        wx.showModal({
-          content: '图片已保存到相册，赶紧晒一下吧~',
-          showCancel: false,
-          confirmText: '好的',
-          confirmColor: '#333',
-          success: function(res) {
-            if (res.confirm) {
-              console.log('用户点击确定');
-            }
-          }
-        })
-      }
-    })
-  },
-  drawImg: function(data) {
-    var that = this;
-    return new Promise((resolve, reject) => {
-      var width = this.data.clientWidth;
-      var height = this.data.clientHeight + 82;
-      ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
-      for (var i = 0; i < data.cardlist.length; i++) {
-        var mleft = data.cardlist[i].clientX - 30;
-        var mtop = data.cardlist[i].clientY - 50;
-        var mid = data.cardlist[i].id;
-        if (mid.indexOf("back") !== -1) { //背面
-          mid = mid.substring(0, mid.length - 4);
-        }
-        var imgUrl = '../../image/' + this.data.cardType + '/' + mid + '.jpg';
-        ctx.drawImage(imgUrl, mleft, mtop, 60, 100);
-      }
-      ctx.draw(false, setTimeout(function() {
-        wx.canvasToTempFilePath({
-          x: 0,
-          y: 0,
-          width: that.data.clientWidtht,
-          height: that.data.clientHeight + 82,
-          destWidth: that.data.clientWidtht,
-          destHeight: that.data.clientHeight,
-          canvasId: 'img',
-          success: function(res) {
-            ctx.drawImage("../../image/pic/bg.jpg", 0, 0, width, height);
-            ctx.draw();
-            console.log(res.tempFilePath);
-            that.setData({
-              prurl: res.tempFilePath
-            });
-          },
-          fail: function(res) {
-            console.log(res)
-          }
-        })
-      }, 500));
-      resolve();
-    })
-  },
-  resetScroll: function(){
+  resetScroll: function() {
     this.setData({
       scrollkey: true
     });
@@ -199,17 +82,14 @@ Page({
     console.log(e)
     var cardblockTemp = this.data.cardblock;
     this.getLeftVal(e.currentTarget.id).then(data => {
-      var citem = cardblockTemp.filter(function (item) {
+      var citem = cardblockTemp.filter(function(item) {
         return item.id + "back" == e.currentTarget.id;
       })
+      if (citem.length == 0) return;
       citem[0].left = data.left;
       citem[0].top = data.top;
       cardblockTemp.push(citem[0])
-      var hash = {};
-      cardblockTemp = cardblockTemp.reduce(function (item, next) { //去除重复项
-        hash[next.id] ? '' : hash[next.id] = true && item.push(next);
-        return item
-      }, []);
+      cardblockTemp = delRepeat(cardblockTemp); //去除重复
       this.setData({
         cardblock: cardblockTemp
       });
@@ -233,7 +113,7 @@ Page({
         var left = 'imgList[' + i + '].left';
         if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌
           this.setData({
-            [show]: false,
+            [show]: 1,
             [dragkey]: 0,
             [left]: i * 62
           });
@@ -244,7 +124,7 @@ Page({
         cardblock: cardblockTemp
       })
     }
-   this.resetScroll();
+    this.resetScroll();
   },
   getLeftVal: function(id) {
     return new Promise((resolve, reject) => {
@@ -253,6 +133,7 @@ Page({
       wx.createSelectorQuery().select(idTemp).boundingClientRect(function(rect) {
         poTemp.left = rect.left;
         poTemp.top = rect.top;
+        console.log(idTemp,poTemp)
         resolve(poTemp);
       }).exec()
     });
@@ -261,27 +142,30 @@ Page({
     return new Promise((resolve, reject) => {
       if (e.currentTarget.dataset.dragkey == 0) {
         var cardblockTemp = this.data.cardblock;
-        console.log(e,cardblockTemp)
+        console.log(e, cardblockTemp)
         for (var i = 0; i < this.data.imgList.length; i++) {
           var left = 'imgList[' + i + '].left';
           var top = 'imgList[' + i + '].top';
           var dragkey = 'imgList[' + i + '].dragkey';
           var show = 'imgList[' + i + '].show';
-          if (this.data.imgList[i].dragkey == 2){
+          var id = 'imgList[' + i + '].id';
+          if (this.data.imgList[i].dragkey == 2) {
             for (var j = 0; j < cardblockTemp.length; j++) {
               if (cardblockTemp[j].id == this.data.imgList[i].id) {
                 cardblockTemp[j] = cardblockTemp[j]
               }
             }
-          }
-          else if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
+          } else if (e.target.id.indexOf(this.data.imgList[i].id) !== -1) { //选中的牌突出
             this.setData({
-              [left]: opTemp.left % this.data.clientWidth,
-              [show]: true,
+              [left]: opTemp.left,
+              [show]: 0,
               scrollkey: false,
               [top]: this.data.clientHeight - 180,
-              [dragkey]: 1
+              [dragkey]: 1,
+              [id]: this.data.imgList[i].id.substring(0,this.data.imgList[i].id.length-6)
             });
+            //var itemTemp = this.data.imgList[i];
+            //itemTemp.left = opTemp.left;
             cardblockTemp.push(this.data.imgList[i]);
             //break;
           }
@@ -290,39 +174,20 @@ Page({
       }
     })
   },
-  makecardblockTemp: function (e, opTemp){
+  makecardblockTemp: function(e, opTemp) {
     this.creatNewCard(e, opTemp).then(cardblockTemp => {
-      var hash = {};
-      cardblockTemp = cardblockTemp.reduce(function (item, next) { //去除重复项
-        hash[next.id] ? '' : hash[next.id] = true && item.push(next);
-        return item
-      }, []);
+      cardblockTemp = delRepeat(cardblockTemp); //去除重复
       console.log(cardblockTemp)
       this.setData({
         cardblock: cardblockTemp
       });
     })
+    console.log(this.data.imgList)
   },
   turnback: function(e) {
     console.log(e)
     this.getLeftVal(e.currentTarget.id).then(data => {
       this.makecardblockTemp(e, data);
-    })
-    
-  },
-  updateCardList: function(e) {
-    var imgListTemp = this.data.imgList;
-    for (var i = 0; i < imgListTemp.length; i++) {
-      if (imgListTemp[i].id + "back" == e.detail.id) {
-        imgListTemp[i].show = false;
-        imgListTemp[i].dragkey = 0;
-        imgListTemp[i].left = i * 62;
-      }
-    }
-    this.setData({
-      cardblock: e.detail.arr,
-      imgList: imgListTemp,
-      scrollkey: (e.detail.arr.length == 0) ? true : false
     })
   },
   shuffle: function() {
@@ -331,7 +196,7 @@ Page({
       drawPanel: true,
       shuffleCardCanvas: false,
       isShuffle: true,
-      cardblock:[],
+      cardblock: [],
     });
     shuffleCard(this.data.cardType);
     this.resetScroll();
@@ -367,6 +232,16 @@ function cloneObj(oldObj) { //复制对象方法
   for (var i in oldObj)
     newObj[i] = cloneObj(oldObj[i]);
   return newObj;
+};
+
+function delRepeat(arr) {
+  var hash = {};
+  arr = arr.reduce(function(item, next) { //去除重复项
+    hash[next.id] ? '' : hash[next.id] = true && item.push(next);
+    return item
+  }, []);
+
+  return arr;
 };
 
 function extendObj() { //扩展对象
@@ -426,7 +301,7 @@ function randomCard(arr, cardtype) { //打乱牌顺序
   for (var k = 0; k < larr.length; k++) {
     var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg"; //app.globalData.clientHeight-110
     arrtemp.push({
-      "id": larr[k],
+      "id": larr[k] + 'scroll',
       "src": imgSrc,
       "left": k * 62,
       "top": app.globalData.clientHeight - 110,
@@ -437,7 +312,7 @@ function randomCard(arr, cardtype) { //打乱牌顺序
       "position": "absolute",
       "shownum": false,
       "dragkey": 0,
-      "show": false
+      "show": 1
     })
   };
   return arrtemp;
