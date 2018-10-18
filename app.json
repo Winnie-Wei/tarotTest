@@ -1,15 +1,15 @@
 {
   "pages": [
-    "pages/drawCard/drawCard",
-    "pages/drawCard1/drawCard1",
     "pages/startDraw/startDraw",
-    "pages/createImg/createImg",
-    "pages/canvas/canvas",
-    "pages/notes/notes",
-    "pages/means/means",
     "pages/cardDetail/cardDetail",
+    "pages/drawCard/drawCard",
+    "pages/notes/notes",
+    "pages/drawCard1/drawCard1",
+    "pages/createImg/createImg", 
+    "pages/canvas/canvas",
+    "pages/means/means", 
     "pages/noteDetail/noteDetail",
-    "pages/index/index",
+    "pages/index/index", 
     "pages/logs/logs"
   ],
   "window": {

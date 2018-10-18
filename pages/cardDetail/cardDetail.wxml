@@ -1,1 +1,6 @@
-<image src='{{cardUrl}}'></image>
+<image src='{{cardUrl}}' class="card-sm"  mode='widthFix'></image>
+<view class='card-name'>18.月亮（The Moon）</view>
+<view class='mean-con'>
+  <view class="card-means {{index==0 ? 'blue' : ''}}" wx:for="{{meanArr}}" wx:key="{{index}}">{{item}}</view>
+</view>
+

@@ -29,15 +29,16 @@ Page({
     }],
     typeArray: ['waiteTarot', 'newSight'],
     cardType: '', //当前使用的牌种
-    cardblock: [] //生成可以拖拽的卡片
+    cardblock: [], //生成可以拖拽的卡片
+    lastTapTime: ''
   },
   onLoad: function(options) {
     console.log(options)
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
-      nameList: tarotList.nameList.slice(this.data.numArray[0].s, this.data.numArray[0].e),
-      cardType: this.data.typeArray[0],
+      nameList: tarotList.nameList.slice(this.data.numArray[options.num].s, this.data.numArray[options.num].e),
+      cardType: this.data.typeArray[options.type],
       scrollWidth: this.data.numArray[0].e * 62 
     });
   },
@@ -83,7 +84,11 @@ Page({
     var cardblockTemp = this.data.cardblock;
     this.getLeftVal(e.currentTarget.id).then(data => {
       var citem = cardblockTemp.filter(function(item) {
-        return item.id + "back" == e.currentTarget.id;
+        if (item.shownum) {
+          return item.id == e.currentTarget.id;
+        } else {
+          return item.id + "back" == e.currentTarget.id;
+        }
       })
       if (citem.length == 0) return;
       citem[0].left = data.left;
@@ -124,6 +129,21 @@ Page({
         cardblock: cardblockTemp
       })
     }
+    else if ( e.target.dataset.dragkey == 2 ){
+      for (var i = 0; i < this.data.cardblock.length; i++) {
+        if (e.target.id.indexOf(this.data.cardblock[i].id) !== -1) {
+          var transF = 'cardblock[' + i + '].transF';
+          var transB = 'cardblock[' + i + '].transB';
+          var shownum = 'cardblock[' + i + '].shownum';
+          this.setData({
+            [transF]: "rotateY(180deg)",
+            [transB]: "rotateY(0deg)",
+            [shownum]: "true",
+          });
+          break;
+        }
+      }
+    }
     this.resetScroll();
   },
   getLeftVal: function(id) {
@@ -160,7 +180,7 @@ Page({
               [left]: opTemp.left,
               [show]: 0,
               scrollkey: false,
-              [top]: this.data.clientHeight - 180,
+              [top]: this.data.clientHeight - 150,
               [dragkey]: 1,
               [id]: this.data.imgList[i].id.substring(0,this.data.imgList[i].id.length-6)
             });
@@ -271,7 +291,7 @@ function shuffleCard(cardtype) { //洗牌动画
       ry = y + 46;
       ctxs.translate(rx, ry);
       ctxs.rotate(deg);
-      ctxs.drawImage('../../image/' + cardtype + '/78.jpg', 0, 0, 35, 62);
+      ctxs.drawImage('../../image/' + cardtype + '/cardback.png', 0, 0, 35, 62);
       ctxs.rotate(-deg);
       ctxs.translate(-rx, -ry);
     } else {
@@ -282,7 +302,7 @@ function shuffleCard(cardtype) { //洗牌动画
       ry = y + 46;
       ctxs.translate(rx, ry);
       ctxs.rotate(deg);
-      ctxs.drawImage('../../image/' + cardtype + '/78.jpg', 25, -46, 45, 80);
+      ctxs.drawImage('../../image/' + cardtype + '/cardback.png', 25, -46, 45, 80);
       ctxs.rotate(-deg);
       ctxs.translate(-rx, -ry);
     }

@@ -9,6 +9,7 @@ page{
   /* display:inline-block; */
   height: 100px;
   width:60px;
+  transition: all 0s linear;
 }
 .bg-image{
   position: fixed;
@@ -22,7 +23,7 @@ page{
   position: absolute;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  /* transition: all 0.1s linear; */
+  transition: all 0s linear;
 }
 
 .card-num{

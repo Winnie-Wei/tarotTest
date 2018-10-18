@@ -1,1 +1,27 @@
-/* pages/cardDetail/cardDetail.wxss */
+page{
+  padding: 0 20rpx;
+  position: relative;
+  box-sizing: border-box;
+}
+.bg-image{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card-sm{
+  width:160rpx;
+}
+.card-name{
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.mean-con{
+  /* margin-top: 20rpx; */
+}
+.card-means{
+  width:95%;
+}
+.blue{
+  color:blue;
+  line-height: 70rpx;
+}
