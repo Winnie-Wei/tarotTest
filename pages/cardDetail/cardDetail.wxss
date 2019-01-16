@@ -15,9 +15,9 @@ page{
   font-size: 36rpx;
   font-weight: bold;
 }
-.mean-con{
-  /* margin-top: 20rpx; */
-}
+/* .mean-con{
+  margin-top: 20rpx; 
+} */
 .card-means{
   width:95%;
 }
