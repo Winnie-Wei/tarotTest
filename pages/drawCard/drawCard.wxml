@@ -5,22 +5,35 @@
 <!-- 洗牌背景 -->
 <canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden="{{shuffleCardCanvas}}"></canvas>
 
+<!-- 铺牌 -->
+<scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{drawPanel}}'>
+  <view class='flexc'>
+    <view class='view-flex' wx:for="{{nameList}}" wx:key="{{index}}">
+        <image class='card-img' src='../../image/waiteTarot/cardback.png'></image>
+        <view class='card-num'>{{index+1}}</view>
+        <view hidden='{{drawPanel}}' class='card-lay'></view>
+    </view>    
+  </view>
+
+</scroll-view>
+
+
 <!-- 拖拽 -->
-<movable-area style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;">
+<!-- <movable-area style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;">
   <movable-view wx:for="{{cardblock}}" wx:key="{{index}}" x="{{item.left}}" y="{{item.top}}" direction="all" animation="{{movalbeAnimation}}" class="card-view">
     <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' src='{{item.src}}' style="transform:{{item.transB}};" bindtouchend='dragMoveEnd'></image>
     <image src='../../image/waiteTarot/cardback.png' data-dragkey="{{item.dragkey}}" data-index="{{index}}" id='{{item.id + "back"}}' style="transform:{{item.transF}};" bindtap="tapBack" bindtouchmove="dragMoveView" bindtouchend='dragMoveEnd'></image>
     <view class='card-num' style='z-index: {{item.zindexF}};left:5px;' hidden='{{item.shownum}}'>{{item.zindexF/2+1}}</view>
   </movable-view>
-</movable-area>
+</movable-area> -->
 
 <!-- 铺牌 -->
-<scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}' scroll-left="{{scrollLeft}}" style=''>
+<!-- <scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}' scroll-left="{{scrollLeft}}" style=''>
   <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
     <image data-time="{{lastTapTime}}" data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='../../image/waiteTarot/cardback.png' style="left:{{item.left}}px;top:0;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};opacity:{{item.show}};" bindtap="turnback"></image>
     <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left+5}}px;top:0;position:{{item.position}};z-index:{{item.zindexF}};opacity:{{item.show}};'>{{index+1}}</view>
   </view>
-</scroll-view>
+</scroll-view> -->
 
 <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image>
 <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>

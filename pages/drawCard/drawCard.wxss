@@ -25,13 +25,6 @@ page{
   backface-visibility: hidden;
   transition: all 0s linear;
 }
-
-.card-num{
-  color:#F5DEB3;
-  position:absolute;
-  /* transition: all 0.1s linear; */
-  z-index:12;
-}
 .drag-arrow{
   position:absolute;
   bottom:135px;
@@ -104,3 +97,54 @@ page{
 .card-block{
   display: inline-block;
 }
+
+
+/* ---------------- */
+.flexc{
+  margin:0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:space-around ;
+}
+.scroll-card{
+  height: 100%;
+  position:absolute;
+  top:0;
+}
+
+.view-flex{
+  width:20%;
+  height:100px;
+  border:5px solid transparent;
+  position:relative;
+}
+
+.card-img{
+  width:120rpx;
+  height:200rpx;
+  margin:0 auto;
+  display:block;
+}
+.card-con{
+  width:100%;
+  height:100%;
+}
+.card-num{
+  color:#F5DEB3;
+  position:absolute;
+  /* transition: all 0.1s linear; */
+  top:6rpx;
+  left:12px;
+}
+
+.card-lay{
+  width:120rpx;
+  height:200rpx;
+  margin:0 auto;
+  background: rgb(245, 244, 179);
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+

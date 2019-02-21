@@ -34,6 +34,10 @@ Page({
   },
   onLoad: function(options) {
     console.log(options)
+    options = {
+      num: 0,
+      type: 0
+    }
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
