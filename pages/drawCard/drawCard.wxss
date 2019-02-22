@@ -138,13 +138,25 @@ page{
 }
 
 .card-lay{
-  width:120rpx;
+  width:130rpx;
   height:200rpx;
   margin:0 auto;
   background: rgb(245, 244, 179);
+  opacity: 0.92;
   position: absolute;
   top:0;
-  left:0;
+  left:10rpx;
+  border-radius: 14rpx;
+}
+
+.card-ta{
+  width:60rpx;
+  height:60rpx;
+  background:red;
+  border-radius: 30rpx;
+  margin:50% auto;
+  text-align: center;
+  line-height:60rpx;
 }
 
 

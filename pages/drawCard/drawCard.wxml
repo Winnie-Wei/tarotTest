@@ -8,10 +8,12 @@
 <!-- 铺牌 -->
 <scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{drawPanel}}'>
   <view class='flexc'>
-    <view class='view-flex' wx:for="{{nameList}}" wx:key="{{index}}">
-        <image class='card-img' src='../../image/waiteTarot/cardback.png'></image>
+    <view class='view-flex' wx:for="{{shufCard}}" wx:key="{{index}}">
+        <image class='card-img' src='../../image/waiteTarot/cardback.png' bindtap="tapChoose" data-index="{{index}}"></image>
         <view class='card-num'>{{index+1}}</view>
-        <view hidden='{{drawPanel}}' class='card-lay'></view>
+        <view hidden='{{item.tag == 0}}' class='card-lay' bindtap='tapCancel'>
+          <view class='card-ta'>{{item.tag}}</view>
+        </view>
     </view>    
   </view>
 
