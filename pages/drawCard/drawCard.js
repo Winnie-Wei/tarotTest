@@ -27,8 +27,7 @@ Page({
     shufCard: [],//保存铺牌数组
     choseArr:[],//保存选中数组
     drawCard: [],//保存拖拽的牌
-    choseArrTemp:[], //改变拖拽牌的index 
-    
+    choseArrTemp:[], //改变拖拽牌的index
   },
   onLoad: function(options) {
     options = {
@@ -131,6 +130,35 @@ Page({
     console.log(arr)
     this.setData({
       drawCard: arr
+    })
+  },
+  tapChoose:function(e){
+    console.log(e)
+    let arr = this.data.shufCard;
+    //++this.data.chosenCount;
+    this.data.choseArr.push(e.currentTarget.dataset.index);
+    let eindex = e.currentTarget.dataset.index;
+    arr[eindex].tag = this.data.choseArr.findIndex((value)=>{
+      return value == eindex;
+    }) + 1;
+    console.log(this.data.shufCard[eindex]);
+    this.setData({
+      shufCard: arr
+    });
+  },
+
+  tapCancel: function (e) {
+    let arr = this.data.shufCard;
+    let eindex = e.currentTarget.dataset.index;
+    let delindex = this.data.choseArr.findIndex((value) => {
+      return value == eindex;
+    });
+    //this.data.choseArr.splice(delindex,1);
+    for (const value of this.data.choseArr) {
+      console.log(value);
+    }
+    this.setData({
+      shufCard: arr
     });
   },
 
@@ -191,6 +219,7 @@ function randomCard(arr, cardtype) { //打乱牌顺序
       y: 0
     })
   };
+  console.log(arrtemp)
   return arrtemp;
 }
 
