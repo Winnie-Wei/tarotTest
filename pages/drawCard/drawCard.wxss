@@ -100,6 +100,11 @@ page{
 
 
 /* ---------------- */
+.confirm-btn{
+  position: absolute;
+  bottom: 50rpx;
+  right: 20rpx;
+}
 .flexc{
   margin:0 auto;
   display: flex;
@@ -158,5 +163,46 @@ page{
   text-align: center;
   line-height:60rpx;
 }
+.draw-mov{
+  height: 100%;
+  position:absolute;
+  top:0;
+  padding:20rpx;
 
+}
+.draw-moview{
+  width:120rpx;
+  height:200rpx;
+  /* position: relative; */
+  margin:20rpx;
+}
+.draw-img{
+  width:120rpx;
+  height:200rpx;
+  position: absolute;
+  top:0;
+  left:0;
+}
+.draw-imgt{
+  z-index: 2;
+  transition: all 1s ease;
+  transform-style: preserve-3d;
+  /* backface-visibility: hidden; */
+}
+.draw-imgb{
+  z-index: 1;
+  transition: all 1s ease;
+  transform-style: preserve-3d;
+  /* backface-visibility: hidden; */
+}
+.draw-num{
+  color:#F5DEB3;
+  position:absolute;
+  top:6rpx;
+  left:6px;
+  z-index:3;
+}
+.img-down{
+  transform: rotateX(180deg); 
+}
 

@@ -3,22 +3,29 @@
 <!-- 洗牌结束背景 -->
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></canvas>
 <!-- 洗牌背景 -->
-<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden="{{shuffleCardCanvas}}"></canvas>
+<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden='{{panelKey == "drawPanel" || panelKey == "shufPanel"}}'></canvas>
 
 <!-- 铺牌 -->
-<scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{drawPanel}}'>
+<scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "drawPanel" || panelKey == "shuffleCardCanvas"}}'>
   <view class='flexc'>
     <view class='view-flex' wx:for="{{shufCard}}" wx:key="{{index}}">
         <image class='card-img' src='../../image/waiteTarot/cardback.png' bindtap="tapChoose" data-index="{{index}}"></image>
         <view class='card-num'>{{index+1}}</view>
-        <view hidden='{{item.tag == 0}}' class='card-lay' bindtap='tapCancel'>
+        <view hidden='{{item.tag == 0}}' class='card-lay' bindtap='tapCancel' data-index="{{index}}">
           <view class='card-ta'>{{item.tag}}</view>
         </view>
     </view>    
   </view>
-
 </scroll-view>
 
+<!-- 拖拽 -->
+<movable-area class="draw-mov" style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}'>
+  <movable-view id='{{item.id + "_" + index}}'  wx:for="{{drawCard}}" wx:key="{{index}}" class='draw-moview' direction="all" x="{{item.x}}" y="{{item.y}}" bindtouchstart="onDragStart" bindchange="onDrag" style="z-index:{{item.zindex}};" data-num="{{item.num}}">
+    <image id='{{item.id}}' src='../../image/waiteTarot/cardback.png' class='draw-img draw-imgt' bindtap='turnback' style='{{item.drawPoke.front}}' data-index="{{index}}"></image>
+    <image id='{{item.id  + "back"}}' src='{{item.src}}' class='draw-img draw-imgb {{item.position == 1 ? "img-down" : ""}}' style='{{item.drawPoke.back}}'></image>
+    <view class='draw-num' hidden=''>{{item.num + 1}}</view>
+  </movable-view>
+</movable-area>
 
 <!-- 拖拽 -->
 <!-- <movable-area style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;">
@@ -40,6 +47,5 @@
 <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image>
 <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>
 
-
-<!-- <button class='share' type='primary' bindtap='share' >生成分享图</button>
-<button type='primary' size='mini' bindtap='save'>保存分享图</button> -->
+<button type='primary' bindtap='confirm' class='confirm-btn'>选好啦</button>
+<!-- <button type='primary' size='mini' bindtap='save'>保存分享图</button> -->

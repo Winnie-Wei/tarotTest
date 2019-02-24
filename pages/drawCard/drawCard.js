@@ -8,9 +8,8 @@ Page({
     clientHeight: '',
     scrollkey: true,
     scrollLeft: 0,
-    drawPanel: true,
+    panelKey: "shuffleCardCanvas",
     nameList: [],
-    shuffleCardCanvas: false,
     isShuffle: false,
     movalbeAnimation: false, //movable-view禁止动画
     numArray: [{
@@ -27,7 +26,9 @@ Page({
     cardType: '', //当前使用的牌种
     shufCard: [],//保存铺牌数组
     choseArr:[],//保存选中数组
-    chosenCount: 0,//选牌计数
+    drawCard: [],//保存拖拽的牌
+    choseArrTemp:[], //改变拖拽牌的index 
+    
   },
   onLoad: function(options) {
     options = {
@@ -63,12 +64,73 @@ Page({
     let delindex = this.data.choseArr.findIndex((value) => {
       return value == eindex;
     });
-    //this.data.choseArr.splice(delindex,1);
-    for (const value of this.data.choseArr) {
-      console.log(value);
+    arr[eindex].tag = 0;
+    this.data.choseArr.splice(delindex,1);
+    for (const item of this.data.choseArr) {
+      let nindex = this.data.choseArr.findIndex((value) => {
+        return value == item;
+      });
+      arr[item].tag = nindex + 1;
     }
     this.setData({
       shufCard: arr
+    });
+  },
+
+  turnback: function(e){
+    let front = e.currentTarget.id
+    let back = e.currentTarget.id + "back";
+    let eindex = e.currentTarget.dataset.index;
+    let arr = this.data.drawCard;
+    arr[eindex].drawPoke = {
+      // front: `z-index:1;`,
+      // back: `z-index:2;`
+      front: `height:0;opacity:0;`,
+      back: ``
+    }
+    this.setData({
+      drawCard: arr
+    });
+  },
+
+  onDragStart:function(e){
+    let choseArr = this.data.choseArr;
+    choseArr.unshift(e.currentTarget.dataset.num);
+    let choseTemp = Array.from(new Set(choseArr));
+    this.setData({
+      choseArrTemp: choseTemp,
+      choseArr: choseTemp
+    });
+  },
+
+  onDrag: function(e){
+    console.log(e)
+    let eindex = e.currentTarget.id.split("_")[1];
+    let arr = this.data.drawCard;
+    let choseArr = this.data.choseArr;
+    let choseArrTemp = this.data.choseArrTemp;
+    // choseArr.unshift(e.currentTarget.dataset.num);
+    // let choseTemp = Array.from(new Set(choseArr.unshift(e.currentTarget.dataset.num)));
+    let choseTempLen = choseArrTemp.length;
+    console.log(choseArr, choseArrTemp)
+    arr[eindex].x = e.detail.x;
+    arr[eindex].y = e.detail.y;
+    for (const item of arr) {
+      let indext = choseArrTemp.findIndex( val => {
+        return val == item.num
+      });
+      console.log(item.num, indext)
+      item.zindex = choseTempLen - indext;
+      // if (item.zindex == len + 1){
+      //   item.zindex = len - eindex;
+      // }
+      //(item.zindex == len + 1) ? eindex : item.zindex;
+    }
+
+    //arr[eindex].zindex = len + 1;
+    console.log(arr)
+    this.setData({
+      drawCard: arr
     });
   },
 
@@ -76,9 +138,9 @@ Page({
   shuffle: function() {
     this.setData({
       shufCard: randomCard(this.data.nameList, this.data.cardType),
-      drawPanel: true,
-      shuffleCardCanvas: false,
+      panelKey: "shuffleCardCanvas",
       isShuffle: true,
+      choseArr: []
     });
     shuffleCard(this.data.cardType);
   },
@@ -87,8 +149,22 @@ Page({
       return;
     }
     this.setData({
-      shuffleCardCanvas: true,
-      drawPanel: false,
+      panelKey: "shufPanel"
+    });
+  },
+  confirm: function () {
+    let arr = [];
+    let len = this.data.choseArr.length;
+    for (const item of this.data.choseArr){
+      this.data.shufCard[item].num = item;
+      this.data.shufCard[item].zindex = len;
+      arr.push(this.data.shufCard[item]);
+      len--;
+    }
+    console.log(arr)
+    this.setData({
+      panelKey: "drawPanel",
+      drawCard: arr
     });
   }
 });
@@ -107,9 +183,14 @@ function randomCard(arr, cardtype) { //打乱牌顺序
       "id": larr[k],
       "src": imgSrc,
       "tag": 0,
+      "position": Math.round(Math.random() * 10) % 2,
+      "drawPoke": {
+        front: '', back: ''
+      },
+      x:0,
+      y: 0
     })
   };
-  console.log(arrtemp)
   return arrtemp;
 }
 
