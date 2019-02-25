@@ -29,7 +29,15 @@ Page({
     drawCard: [],//保存拖拽的牌
     choseArrTemp:[], //改变拖拽牌的index
     zindexCount: 0, //改变zindex
-    dragKey: false
+    dragKey: false,
+    // 触摸开始时间
+    touchStartTime: 0,
+    // 触摸结束时间
+    touchEndTime: 0,
+    // 最后一次单击事件点击发生时间
+    lastTapTime: 0,
+    // 单击事件点击后要触发的函数
+    lastTapTimeoutFunc: null, 
   },
   onLoad: function(options) {
     options = {
@@ -122,15 +130,6 @@ Page({
 
     arr[eindex].x = e.detail.x;
     arr[eindex].y = e.detail.y;
-    // for (const item of arr) {
-    //   let indext = choseArrTemp.findIndex( val => {
-    //     return val == item.num
-    //   });
-    //   console.log(item.num, indext)
-    //   item.zindex = choseTempLen - indext;
-      
-    // }
-    //console.log(arr)
     this.setData({
       drawCard: arr
     })
@@ -170,15 +169,42 @@ Page({
     });
   },
 
+  /// 按钮触摸开始触发的事件
+  touchStart: function (e) {
+    console.log(e)
+    this.touchStartTime = e.timeStamp
+  },
+
+  /// 按钮触摸结束触发的事件
+  touchEnd: function (e) {
+    console.log(e)
+    this.touchEndTime = e.timeStamp
+  },
+
   //洗牌
-  shuffle: function() {
-    this.setData({
-      shufCard: randomCard(this.data.nameList, this.data.cardType),
-      panelKey: "shuffleCardCanvas",
-      isShuffle: true,
-      choseArr: []
-    });
-    shuffleCard(this.data.cardType);
+  shuffle: function(e) {
+    console.log(e)
+    var that = this
+    // 控制点击事件在350ms内触发，加这层判断是为了防止长按时会触发点击事件
+   // if (that.touchEndTime - that.touchStartTime < 350) {
+      // 当前点击的时间
+      var currentTime = e.timeStamp
+      var lastTapTime = that.lastTapTime
+      // 更新最后一次点击时间
+      that.lastTapTime = currentTime
+
+      // 如果两次点击时间在300毫秒内，则认为是双击事件
+      if (currentTime - lastTapTime < 300) {
+        this.setData({
+          shufCard: randomCard(this.data.nameList, this.data.cardType),
+          panelKey: "shuffleCardCanvas",
+          isShuffle: true,
+          choseArr: []
+        });
+        shuffleCard(this.data.cardType);
+      }
+   // }
+
   },
   deal: function() {
     if (!this.data.isShuffle) {
@@ -202,7 +228,7 @@ Page({
     this.setData({
       panelKey: "drawPanel",
       drawCard: arr,
-      zindexCount: (this.data.dragKey ? this.data.choseArr.length : zindexCount )
+      zindexCount: (this.data.dragKey ? zindexCount : this.data.choseArr.length)
     });
   }
 });

@@ -3,7 +3,7 @@
 <!-- 洗牌结束背景 -->
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></canvas>
 <!-- 洗牌背景 -->
-<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden='{{panelKey == "drawPanel" || panelKey == "shufPanel"}}'></canvas>
+<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden='{{panelKey == "drawPanel" || panelKey == "shufPanel"}}' bindtap="shuffle"></canvas>
 
 <!-- 铺牌 -->
 <scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "drawPanel" || panelKey == "shuffleCardCanvas"}}'>
@@ -44,7 +44,9 @@
   </view>
 </scroll-view> -->
 
-<image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image>
+
+
+<!-- <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image> -->
 <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>
 
 <button type='primary' bindtap='confirm' class='confirm-btn'>选好啦</button>
