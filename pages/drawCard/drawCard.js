@@ -28,6 +28,8 @@ Page({
     choseArr:[],//保存选中数组
     drawCard: [],//保存拖拽的牌
     choseArrTemp:[], //改变拖拽牌的index
+    zindexCount: 0, //改变zindex
+    dragKey: false
   },
   onLoad: function(options) {
     options = {
@@ -93,41 +95,42 @@ Page({
   },
 
   onDragStart:function(e){
-    let choseArr = this.data.choseArr;
-    choseArr.unshift(e.currentTarget.dataset.num);
-    let choseTemp = Array.from(new Set(choseArr));
+    ++this.data.zindexCount; console.log(this.data.zindexCount)
+    // let choseArr = this.data.choseArr;
+    // choseArr.unshift(e.currentTarget.dataset.num);
+    // let choseTemp = Array.from(new Set(choseArr));
+    // this.setData({
+    //   choseArrTemp: choseTemp,
+    //   choseArr: choseTemp
+    // });
+    console.log(e)
+    let arr = this.data.drawCard;
+    let eindex = e.currentTarget.id.split("_")[1];
+    arr[eindex].drag = true;
+    arr[eindex].zindex = this.data.zindexCount;
     this.setData({
-      choseArrTemp: choseTemp,
-      choseArr: choseTemp
-    });
+      drawCard: arr,
+      dragKey: true
+    })
   },
 
   onDrag: function(e){
-    console.log(e)
     let eindex = e.currentTarget.id.split("_")[1];
     let arr = this.data.drawCard;
-    let choseArr = this.data.choseArr;
     let choseArrTemp = this.data.choseArrTemp;
-    // choseArr.unshift(e.currentTarget.dataset.num);
-    // let choseTemp = Array.from(new Set(choseArr.unshift(e.currentTarget.dataset.num)));
     let choseTempLen = choseArrTemp.length;
-    console.log(choseArr, choseArrTemp)
+
     arr[eindex].x = e.detail.x;
     arr[eindex].y = e.detail.y;
-    for (const item of arr) {
-      let indext = choseArrTemp.findIndex( val => {
-        return val == item.num
-      });
-      console.log(item.num, indext)
-      item.zindex = choseTempLen - indext;
-      // if (item.zindex == len + 1){
-      //   item.zindex = len - eindex;
-      // }
-      //(item.zindex == len + 1) ? eindex : item.zindex;
-    }
-
-    //arr[eindex].zindex = len + 1;
-    console.log(arr)
+    // for (const item of arr) {
+    //   let indext = choseArrTemp.findIndex( val => {
+    //     return val == item.num
+    //   });
+    //   console.log(item.num, indext)
+    //   item.zindex = choseTempLen - indext;
+      
+    // }
+    //console.log(arr)
     this.setData({
       drawCard: arr
     })
@@ -153,9 +156,14 @@ Page({
     let delindex = this.data.choseArr.findIndex((value) => {
       return value == eindex;
     });
-    //this.data.choseArr.splice(delindex,1);
-    for (const value of this.data.choseArr) {
-      console.log(value);
+    this.data.shufCard[eindex].tag = 0;
+    this.data.choseArr.splice(delindex,1);
+    let len = this.data.choseArr.length;
+    for (const item of this.data.choseArr){
+      let tindex = this.data.choseArr.findIndex((value) => {
+        return value == item;
+      }) + 1
+      arr[item].tag = tindex
     }
     this.setData({
       shufCard: arr
@@ -183,16 +191,18 @@ Page({
   confirm: function () {
     let arr = [];
     let len = this.data.choseArr.length;
+    let zindexCount = this.data.zindexCount;
     for (const item of this.data.choseArr){
       this.data.shufCard[item].num = item;
-      this.data.shufCard[item].zindex = len;
+      this.data.shufCard[item].zindex = this.data.shufCard[item].drag ? this.data.shufCard[item].zindex : len;
       arr.push(this.data.shufCard[item]);
       len--;
     }
     console.log(arr)
     this.setData({
       panelKey: "drawPanel",
-      drawCard: arr
+      drawCard: arr,
+      zindexCount: (this.data.dragKey ? this.data.choseArr.length : zindexCount )
     });
   }
 });
@@ -215,8 +225,9 @@ function randomCard(arr, cardtype) { //打乱牌顺序
       "drawPoke": {
         front: '', back: ''
       },
-      x:0,
-      y: 0
+      "x":0,
+      "y": 0,
+      "drag": false
     })
   };
   console.log(arrtemp)

@@ -185,13 +185,13 @@ page{
 }
 .draw-imgt{
   z-index: 2;
-  transition: all 1s ease;
+  /* transition: all 1s ease; */
   transform-style: preserve-3d;
   /* backface-visibility: hidden; */
 }
 .draw-imgb{
   z-index: 1;
-  transition: all 1s ease;
+  /* transition: all 1s ease; */
   transform-style: preserve-3d;
   /* backface-visibility: hidden; */
 }
