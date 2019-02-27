@@ -1,3 +1,4 @@
+@import "../../utils/font/font.wxss";
 page{
   height:100%;
   position: relative;
@@ -206,3 +207,25 @@ page{
   transform: rotateX(180deg); 
 }
 
+.sun-btn{
+  width:80rpx;
+  height:80rpx;
+  position:absolute;
+  bottom:185px;
+  right:10px;
+  font-size: 80rpx;
+  color: #F5DEB3;
+  animation:sunbtn 10s infinite linear;
+	-webkit-animation:sunbtn 10s infinite linear;
+
+}
+@keyframes sunbtn {
+  from   { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sun-btn:hover{
+  width:60rpx;
+  height:60rpx;
+  color: #FFF;
+}

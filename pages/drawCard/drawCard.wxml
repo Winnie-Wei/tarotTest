@@ -44,10 +44,10 @@
   </view>
 </scroll-view> -->
 
-
+<view class='iconfont icon-sun sun-btn' ></view>
 
 <!-- <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image> -->
 <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>
 
-<button type='primary' bindtap='confirm' class='confirm-btn'>选好啦</button>
+<!-- <button type='primary' bindtap='confirm' class='confirm-btn'>选好啦</button> -->
 <!-- <button type='primary' size='mini' bindtap='save'>保存分享图</button> -->
