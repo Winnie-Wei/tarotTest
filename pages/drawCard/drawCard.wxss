@@ -208,24 +208,47 @@ page{
 }
 
 .sun-btn{
-  width:80rpx;
-  height:80rpx;
+  background: #F2C640;
+  border-radius: 38rpx;
+  width:76rpx;
+  height:76rpx;
   position:absolute;
-  bottom:185px;
-  right:10px;
-  font-size: 80rpx;
-  color: #F5DEB3;
+  bottom:30rpx;
+  right:26rpx;
+  font-size: 60rpx;
+  line-height: 76rpx;
+  text-align: center;
+  color: #FFF;
   animation:sunbtn 10s infinite linear;
 	-webkit-animation:sunbtn 10s infinite linear;
-
 }
 @keyframes sunbtn {
   from   { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
-.sun-btn:hover{
-  width:60rpx;
-  height:60rpx;
+.sun-btn-hover{
   color: #FFF;
+}
+.btn-bg{
+  width:76rpx;
+  height:76rpx;
+  border-radius:38rpx;
+  line-height: 76rpx;
+  text-align: center;
+  background: #F2C640;
+  font-size:50rpx;
+  color:#fff;
+  box-shadow:5rpx 5rpx 5rpx #eec60a;
+  position:absolute;
+  right:26rpx;
+  transition: all 0.4s linear;
+}
+.btn-draws,.btn-shuf{
+  bottom:130rpx;
+}
+.btn-confirm,.btn-supply{
+  bottom:230rpx;
+}
+.btn-hidden-top{
+  bottom:30rpx;
 }
