@@ -28,17 +28,15 @@
 </movable-area>
 
 <view class='side-view' style="height:{{clientHeight?clientHeight+'px':'auto'}};">
-
+  <view class='side-item'>说明</view>
+  <view class='side-item'>洗牌</view>
+  <view class='side-item'>补牌</view>
+  <view class='side-item'>保存图片</view>
 </view>
 
-<<<<<<< HEAD
-<view >
-<!-- 抽牌 -->
-=======
  <!-- btn -->
 <view >
   <!-- 抽牌 -->
->>>>>>> 0af1d5ba93bd6871842bc5b60e776af0c73274b6
   <view class='iconfont icon-draw btn-bg btn-draws {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel"}}' bindtap='backtoshuff'></view>
   <!-- 洗牌 -->
   <view class='iconfont icon-shuf btn-bg btn-shuf {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shuffleCardCanvas"}}' bindtap='shuffleFun'></view>
@@ -46,11 +44,8 @@
  <view class='iconfont icon-confirm btn-bg btn-confirm {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='confirm'></view>
  <!-- 补牌 -->
   <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view>
-<<<<<<< HEAD
-=======
   <!-- 其他功能 -->
   <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view>
->>>>>>> 0af1d5ba93bd6871842bc5b60e776af0c73274b6
   <view class='iconfont icon-sun sun-btn' hover-class='sun-btn-hover' bindtap="changeBtn"></view>
 </view>
 
