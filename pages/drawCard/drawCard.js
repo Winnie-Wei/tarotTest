@@ -38,6 +38,7 @@ Page({
     lastTapTime: 0,
     // 单击事件点击后要触发的函数
     lastTapTimeoutFunc: null, 
+    btnHid:{"draw": false}
   },
   onLoad: function(options) {
     options = {
@@ -179,6 +180,22 @@ Page({
     this.touchEndTime = e.timeStamp
   },
 
+  changeBtn: function(){
+    this.setData({
+      btnHid: !this.data.btnHid
+    });
+  },
+
+  shuffleFun:function(){
+    this.setData({
+      shufCard: randomCard(this.data.nameList, this.data.cardType),
+      panelKey: "shuffleCardCanvas",
+      isShuffle: true,
+      choseArr: []
+    });
+    shuffleCard(this.data.cardType);
+  },
+
   //洗牌
   shuffle: function(e) {
     var that = this
@@ -189,19 +206,18 @@ Page({
     that.lastTapTime = currentTime
 
     if (currentTime - lastTapTime < 300) {
-      this.setData({
-        shufCard: randomCard(this.data.nameList, this.data.cardType),
-        panelKey: "shuffleCardCanvas",
-        isShuffle: true,
-        choseArr: []
-      });
-      shuffleCard(this.data.cardType);
+      this.shuffleFun()
     }
   },
   deal: function() {
     if (!this.data.isShuffle) {
       return;
     }
+    this.setData({
+      panelKey: "shufPanel"
+    });
+  },
+  backtoshuff: function(){
     this.setData({
       panelKey: "shufPanel"
     });
@@ -218,7 +234,7 @@ Page({
     }
     console.log(arr)
     this.setData({
-      panelKey: "drawPanel",
+      panelKey: "dragPanel",
       drawCard: arr,
       zindexCount: (this.data.dragKey ? zindexCount : this.data.choseArr.length)
     });
@@ -253,7 +269,7 @@ function randomCard(arr, cardtype) { //打乱牌顺序
 }
 
 function shuffleCard(cardtype) { //洗牌动画
-  for (var i = 0; i < 60; i++) {
+  for (var i = 0; i < 78; i++) {
     var x = 0,
       y = 0,
       deg = 0,
@@ -261,7 +277,7 @@ function shuffleCard(cardtype) { //洗牌动画
       ry = 0;
     if (app.globalData.clientWidth < 350) {
       x = Math.random() * 160 + 50;
-      y = Math.random() * 160 + 15;
+      y = Math.random() * 280 + 15;
       deg = Math.random() * Math.PI;
       rx = x + 50;
       ry = y + 46;
@@ -272,7 +288,7 @@ function shuffleCard(cardtype) { //洗牌动画
       ctxs.translate(-rx, -ry);
     } else {
       x = Math.random() * 190 + 50;
-      y = Math.random() * 200 + 20;
+      y = Math.random() * 350 + 20;
       deg = Math.random() * Math.PI;
       rx = x + 50;
       ry = y + 46;

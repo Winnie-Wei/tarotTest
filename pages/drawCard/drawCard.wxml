@@ -3,10 +3,10 @@
 <!-- 洗牌结束背景 -->
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></canvas>
 <!-- 洗牌背景 -->
-<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden='{{panelKey == "drawPanel" || panelKey == "shufPanel"}}' bindtap="shuffle"></canvas>
+<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel"}}' bindtap="shuffle"></canvas>
 
 <!-- 铺牌 -->
-<scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "drawPanel" || panelKey == "shuffleCardCanvas"}}'>
+<scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}'>
   <view class='flexc'>
     <view class='view-flex' wx:for="{{shufCard}}" wx:key="{{index}}">
         <image class='card-img' src='../../image/waiteTarot/cardback.png' bindtap="tapChoose" data-index="{{index}}"></image>
@@ -27,27 +27,27 @@
   </movable-view>
 </movable-area>
 
-<!-- 拖拽 -->
-<!-- <movable-area style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;">
-  <movable-view wx:for="{{cardblock}}" wx:key="{{index}}" x="{{item.left}}" y="{{item.top}}" direction="all" animation="{{movalbeAnimation}}" class="card-view">
-    <image data-dragkey="{{item.dragkey}}" id='{{item.id}}' src='{{item.src}}' style="transform:{{item.transB}};" bindtouchend='dragMoveEnd'></image>
-    <image src='../../image/waiteTarot/cardback.png' data-dragkey="{{item.dragkey}}" data-index="{{index}}" id='{{item.id + "back"}}' style="transform:{{item.transF}};" bindtap="tapBack" bindtouchmove="dragMoveView" bindtouchend='dragMoveEnd'></image>
-    <view class='card-num' style='z-index: {{item.zindexF}};left:5px;' hidden='{{item.shownum}}'>{{item.zindexF/2+1}}</view>
-  </movable-view>
-</movable-area> -->
+<view class='side-view' style="height:{{clientHeight?clientHeight+'px':'auto'}};">
 
-<!-- 铺牌 -->
-<!-- <scroll-view scroll-x="{{scrollkey}}" class='card-scroll' hidden='{{drawPanel}}' scroll-left="{{scrollLeft}}" style=''>
-  <view data-dragkey="{{item.dragkey}}" class="card-view" wx:for="{{imgList}}" wx:key="{{index}}">
-    <image data-time="{{lastTapTime}}" data-dragkey="{{item.dragkey}}" id='{{item.id}}' class="imgcss t font" src='../../image/waiteTarot/cardback.png' style="left:{{item.left}}px;top:0;z-index:{{item.zindexF}};transform:{{item.transF}};position:{{item.position}};opacity:{{item.show}};" bindtap="turnback"></image>
-    <view class='card-num' hidden='{{item.shownum}}' style='left:{{item.left+5}}px;top:0;position:{{item.position}};z-index:{{item.zindexF}};opacity:{{item.show}};'>{{index+1}}</view>
-  </view>
-</scroll-view> -->
+</view>
 
-<view class='iconfont icon-sun sun-btn' ></view>
+ <!-- btn -->
+<view >
+  <!-- 抽牌 -->
+  <view class='iconfont icon-draw btn-bg btn-draws {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel"}}' bindtap='backtoshuff'></view>
+  <!-- 洗牌 -->
+  <view class='iconfont icon-shuf btn-bg btn-shuf {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shuffleCardCanvas"}}' bindtap='shuffleFun'></view>
+  <!-- 确认 -->
+ <view class='iconfont icon-confirm btn-bg btn-confirm {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='confirm'></view>
+ <!-- 补牌 -->
+  <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view>
+  <!-- 其他功能 -->
+  <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view>
+  <view class='iconfont icon-sun sun-btn' hover-class='sun-btn-hover' bindtap="changeBtn"></view>
+</view>
 
 <!-- <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image> -->
-<image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image>
+<!-- <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image> -->
 
 <!-- <button type='primary' bindtap='confirm' class='confirm-btn'>选好啦</button> -->
 <!-- <button type='primary' size='mini' bindtap='save'>保存分享图</button> -->

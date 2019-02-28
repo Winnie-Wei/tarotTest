@@ -3,103 +3,6 @@ page{
   height:100%;
   position: relative;
 }
-.scroll-container{
-  width: 100%;
-}
-.card-view {
-  /* display:inline-block; */
-  height: 100px;
-  width:60px;
-  transition: all 0s linear;
-}
-.bg-image{
-  position: fixed;
-  top:0;
-  left:0;
-  height:100%;
-}
-.card-view image {
-  width: 60px;
-  height: 100px;
-  position: absolute;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  transition: all 0s linear;
-}
-.drag-arrow{
-  position:absolute;
-  bottom:135px;
-  left:15px;
-  height:10px;
-  width:120px;
-}
-
-.scroll-box{
-  display:flex;
-  white-space:nowrap; 
-  position: fixed;
-  bottom: 0;  
-  overflow: hidden;
-}
-
-.bg-image{
-  position: fixed;
-  top:0;
-  left:0;
-  height:100%;
-}
-.btn-shuffle{
-  width:40px;
-  height:40px;
-  position:absolute;
-  bottom:185px;
-  right:10px;
-}
-
-.btn-draw{
-  width:40px;
-  height:40px;
-  position:absolute;
-  bottom:240px;
-  right:10px;
-}
-
-.card-content{
-  position: absolute;
-  bottom: 0;
-  height: 150px;
-}
-
-.arrow{
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  bottom: 50px;
-}
-.arrow-right{
-  right:0;
-}
-
-.card-show{
-  height: 100%;
-  overflow: hidden;
-  margin-left:30px;
-}
-
-.card-scroll{
-  width:100%;
-  height:100px;
-  position: fixed;
-  bottom: 10px;
-  white-space:nowrap; 
-  overflow: hidden;
-}
-
-.card-block{
-  display: inline-block;
-}
-
-
 /* ---------------- */
 .confirm-btn{
   position: absolute;
@@ -208,24 +111,59 @@ page{
 }
 
 .sun-btn{
-  width:80rpx;
-  height:80rpx;
+  background: #F2C640;
+  border-radius: 38rpx;
+  width:76rpx;
+  height:76rpx;
   position:absolute;
-  bottom:185px;
-  right:10px;
-  font-size: 80rpx;
-  color: #F5DEB3;
+  bottom:30rpx;
+  right:26rpx;
+  font-size: 60rpx;
+  line-height: 76rpx;
+  text-align: center;
+  color: #FFF;
   animation:sunbtn 10s infinite linear;
 	-webkit-animation:sunbtn 10s infinite linear;
-
 }
 @keyframes sunbtn {
   from   { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
-.sun-btn:hover{
-  width:60rpx;
-  height:60rpx;
+.sun-btn-hover{
   color: #FFF;
+}
+.btn-bg{
+  width:76rpx;
+  height:76rpx;
+  border-radius:38rpx;
+  line-height: 76rpx;
+  text-align: center;
+  background: #F2C640;
+  font-size:50rpx;
+  color:#fff;
+  box-shadow:5rpx 5rpx 5rpx #eec60a;
+  position:absolute;
+  right:26rpx;
+  transition: all 0.4s linear;
+}
+.btn-draws,.btn-confirm,.btn-supply{
+  bottom:130rpx;
+}
+/* .btn-draws,.btn-shuf{
+  bottom:130rpx;
+}
+.btn-confirm,.btn-supply{
+  bottom:230rpx;
+} */
+.btn-hidden-top{
+  bottom:30rpx;
+}
+
+.side-view{
+  width:200rpx;
+  position: fixed;
+  top:0;
+  right:0;
+  background:pink;
+  transition: all 0.4s ease-in;
 }
