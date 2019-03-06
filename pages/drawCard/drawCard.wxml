@@ -32,8 +32,13 @@
   <view class='side-item'>洗牌</view>
   <view class='side-item'>补牌</view>
   <view class='side-item'>保存图片</view>
+  <view class="night">
+   <view class="shooting_star"></view>
+  </view>
 </view>
-
+<view class="night" style="height:{{clientHeight?clientHeight+'px':'auto'}};width:400px;background:black;">
+   <view class="shooting_star"></view>
+  </view>
  <!-- btn -->
 <view >
   <!-- 抽牌 -->
