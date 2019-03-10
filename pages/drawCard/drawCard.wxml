@@ -1,9 +1,11 @@
+<!-- savepic -->
+<canvas canvas-id="savepic" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:fixed;right:1000rpx;"></canvas>
 <!-- 背景图片 -->
-<image class="bg-image" src='../../image/pic/bg.jpg' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></image>
+<image class="bg-image" src='../../image/pic/bg.jpg' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:fixed;"></image>
 <!-- 洗牌结束背景 -->
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></canvas>
 <!-- 洗牌背景 -->
-<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:absolute;top:0;" hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel"}}' bindtap="shuffle"></canvas>
+<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:fixed;top:0;" hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel" || popCanvas }}' bindtap="shuffle"></canvas>
 
 <!-- 铺牌 -->
 <scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}'>
@@ -23,37 +25,46 @@
   <movable-view id='{{item.id + "_" + index}}'  wx:for="{{drawCard}}" wx:key="{{index}}" class='draw-moview' direction="all" x="{{item.x}}" y="{{item.y}}" bindtouchstart="onDragStart" bindchange="onDrag" style="z-index:{{item.zindex}};" data-num="{{item.num}}">
     <image id='{{item.id}}' src='../../image/waiteTarot/cardback.png' class='draw-img draw-imgt' bindtap='turnback' style='{{item.drawPoke.front}}' data-index="{{index}}"></image>
     <image id='{{item.id  + "back"}}' src='{{item.src}}' class='draw-img draw-imgb {{item.position == 1 ? "img-down" : ""}}' style='{{item.drawPoke.back}}'></image>
-    <view class='draw-num' hidden=''>{{item.num + 1}}</view>
+    <view class='draw-num' style='{{item.drawPoke.front}}'>{{item.num + 1}}</view>
   </movable-view>
 </movable-area>
 
-<view class='side-view' style="height:{{clientHeight?clientHeight+'px':'auto'}};">
+<view class='side-view {{showSide}}' style="height:{{clientHeight?clientHeight + 100 +'px':'auto'}};">
   <view class='side-item'>说明</view>
-  <view class='side-item'>洗牌</view>
-  <view class='side-item'>补牌</view>
-  <view class='side-item'>保存图片</view>
-  <view class="night">
-   <view class="shooting_star"></view>
-  </view>
+  <view class='side-item' bindtap='shuffleFun'>洗牌</view>
+  <view class='side-item' bindtap='deal'>补牌</view>
+  <view class='side-item' bindtap='savePicture'>保存图片</view>
 </view>
-<view class="night" style="height:{{clientHeight?clientHeight+'px':'auto'}};width:400px;background:black;">
-   <view class="shooting_star"></view>
-  </view>
  <!-- btn -->
-<view >
+<view>
   <!-- 抽牌 -->
-  <view class='iconfont icon-draw btn-bg btn-draws {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel"}}' bindtap='backtoshuff'></view>
+  <!-- <view class='iconfont icon-draw btn-bg btn-draws {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel"}}' bindtap='backtoshuff'></view> -->
   <!-- 洗牌 -->
-  <view class='iconfont icon-shuf btn-bg btn-shuf {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shuffleCardCanvas"}}' bindtap='shuffleFun'></view>
+  <!-- <view class='iconfont icon-shuf btn-bg btn-shuf {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shuffleCardCanvas"}}' bindtap='shuffleFun'></view> -->
   <!-- 确认 -->
- <view class='iconfont icon-confirm btn-bg btn-confirm {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='confirm'></view>
+ <!-- <view class='iconfont icon-confirm btn-bg btn-confirm {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='confirm'></view> -->
  <!-- 补牌 -->
-  <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view>
+  <!-- <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view> -->
   <!-- 其他功能 -->
-  <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' hidden='{{panelKey == "shufPanel" || panelKey == "shuffleCardCanvas"}}' bindtap='deal'></view>
-  <view class='iconfont icon-sun sun-btn' hover-class='sun-btn-hover' bindtap="changeBtn"></view>
+  <!-- <view class='iconfont icon-supply btn-bg btn-supply" {{btnHid ? "btn-hidden-top" : ""}}' bindtap='openSide'></view> -->
+  <view class='iconfont icon-sun sun-btn' hover-class='sun-btn-hover' bindtap="openSide"></view>
+  <image class="next-btn" src='../../image/pic/next.png' bindtap='goNext' hidden='{{!isShuffle || panelKey == "dragPanel"}}'></image>
 </view>
-
+<popup 
+    id="popups" 
+    cancelText="{{popContent.cancelText}}"
+    confirmText="{{popContent.confirmText}}"
+    title="{{popContent.title}}"
+    imgUrl="{{popContent.imgUrl}}"
+    content="{{popContent.text}}"
+    imgClass="{{popContent.imgClass}}"
+    bind:cancelEvent="popupCancel"
+    bind:confirmEvent="popupConfirm">
+    
+    <!-- <view slot="content" style='color: red;'>
+      插槽测试部分
+    </view> -->
+  </popup>
 <!-- <image src='../../image/icon/tt.png' class='btn-shuffle' bindtap='shuffle'></image> -->
 <!-- <image src='../../image/icon/yy.png' class='btn-draw' bindtap='deal'></image> -->
 

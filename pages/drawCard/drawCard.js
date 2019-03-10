@@ -6,12 +6,9 @@ Page({
   data: {
     clientWidth: '',
     clientHeight: '',
-    scrollkey: true,
-    scrollLeft: 0,
     panelKey: "shuffleCardCanvas",
     nameList: [],
     isShuffle: false,
-    movalbeAnimation: false, //movable-view禁止动画
     numArray: [{
       "s": "0",
       "e": "78"
@@ -38,7 +35,21 @@ Page({
     lastTapTime: 0,
     // 单击事件点击后要触发的函数
     lastTapTimeoutFunc: null, 
-    btnHid:{"draw": false}
+    btnHid:{"draw": false},
+    showSide: '',
+    popContent: {
+      cancelText: '取消',
+      confirmText: '确定',
+      imgUrl: '../../image/pic/next.png',
+      text: "请先抽牌哦~",
+      imgClass: ''
+    },
+    savePicUrl: '',
+    popConfirmKey: '',//弹窗key
+    popCanvas: false,
+  },
+  onReady: function(){
+    this.popup = this.selectComponent("#popups");
   },
   onLoad: function(options) {
     options = {
@@ -52,7 +63,44 @@ Page({
       cardType: this.data.typeArray[options.type],
     });
   },
-
+  saveImg: function () {
+    var that = this;
+    wx.saveImageToPhotosAlbum({
+      filePath: that.data.savePicUrl,
+      success(res) {
+        that.popup.hide();
+        that.setData({
+          popContent: {
+            cancelText: '取消',
+            confirmText: '确定',
+            imgUrl: '',
+            text: "图片已经保存成功啦~",
+            imgClass: ''
+          },
+          popConfirmKey: '',
+          popCanvas: ''
+        })
+        that.popup.show()
+      }
+    })
+  },
+  popupConfirm: function(){
+    if (this.data.popConfirmKey == 'save'){
+      this.saveImg();
+    }else{
+      this.setData({
+        popCanvas: false
+      });
+      this.popup.hide()
+    }
+  },
+  popupCancel: function () {
+    this.setData({
+      popConfirmKey: '',
+      popCanvas: false
+    });
+    this.popup.hide()
+  },
   tapChoose:function(e){
     console.log(e)
     let arr = this.data.shufCard;
@@ -180,10 +228,23 @@ Page({
     this.touchEndTime = e.timeStamp
   },
 
+  goNext:function(){
+    let panel = this.data.panelKey;
+    console.log(panel)
+    switch(panel){
+      case "shuffleCardCanvas": //洗牌页面
+        this.backtoshuff()
+      break;
+      case "shufPanel": //抽牌页面
+        this.confirm()
+      break;
+    }
+  },
+
   changeBtn: function(){
-    this.setData({
-      btnHid: !this.data.btnHid
-    });
+    // this.setData({
+    //   btnHid: !this.data.btnHid
+    // });
   },
 
   shuffleFun:function(){
@@ -191,7 +252,8 @@ Page({
       shufCard: randomCard(this.data.nameList, this.data.cardType),
       panelKey: "shuffleCardCanvas",
       isShuffle: true,
-      choseArr: []
+      choseArr: [],
+      showSide: ''
     });
     shuffleCard(this.data.cardType);
   },
@@ -210,11 +272,17 @@ Page({
     }
   },
   deal: function() {
-    if (!this.data.isShuffle) {
+    if (!this.data.isShuffle || this.data.panelKey != "dragPanel") {
+      this.setData({
+        popCanvas: true
+      });
+      this.popup.show();
       return;
-    }
+    } 
+    
     this.setData({
-      panelKey: "shufPanel"
+      panelKey: "shufPanel",
+      popConfirmKey: 'deal'
     });
   },
   backtoshuff: function(){
@@ -237,6 +305,72 @@ Page({
       panelKey: "dragPanel",
       drawCard: arr,
       zindexCount: (this.data.dragKey ? zindexCount : this.data.choseArr.length)
+    });
+  },
+  openSide: function(){
+    this.setData({
+      showSide: !this.data.showSide ? 'show-side' : ''
+    });
+  },
+  drawSavePic: function () {
+    let that = this;
+    return new Promise((resolve, reject) => {
+    const ctx = wx.createCanvasContext('savepic');
+    ctx.drawImage("../../image/pic/bg.jpg", 0, 0, that.data.clientWidth, that.data.clientHeight);
+    for (const item of that.data.drawCard){
+      ctx.drawImage(item.src, item.x,item.y,60,100);
+    }
+    ctx.draw(false,setTimeout(()=> {
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: that.data.clientWidtht,
+        height: that.data.clientHeight,
+        canvasId: 'savepic',
+        success: function (res) {
+          that.setData({
+            savePicUrl: res.tempFilePath
+          });
+          resolve('ok')
+        },
+        fail: function (res) {
+          console.log(res)
+        }
+      })
+    },500));   
+    })
+  },
+  savePicture:function() {
+    let that = this;
+    if (!that.data.isShuffle || that.data.panelKey != "dragPanel") {
+      that.setData({
+        popContent: {
+        cancelText: '取消',
+        confirmText: '确定',
+        imgUrl: '../../image/pic/next.png',
+        text: "请先抽牌哦~",
+        imgClass: ''
+        },
+        popCanvas: true
+      })
+      setTimeout(()=>{
+        that.popup.show();
+      },300)
+      
+      return;
+    }
+    that.drawSavePic().then(data => {
+      that.setData({
+        popContent: {
+          cancelText: '取消',
+          confirmText: '确定',
+          imgUrl: that.data.savePicUrl,
+          text: "确定要保存这次抽牌结果吗？",
+          imgClass: 'm-i-img-save'
+        },
+        popConfirmKey: 'save'
+      });
+      that.popup.show();
     });
   }
 });
