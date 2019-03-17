@@ -5,7 +5,9 @@
 <!-- 洗牌结束背景 -->
 <canvas canvas-id='img' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;"></canvas>
 <!-- 洗牌背景 -->
-<canvas canvas-id="shuffle" style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:fixed;top:0;" hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel" || popCanvas }}' bindtap="shuffle"></canvas>
+<canvas canvas-id="shuffle" class='shuf-style {{shufMove}}' style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "dragPanel" || panelKey == "shufPanel" || popCanvas }}' bindtap="shuffle"></canvas>
+<!-- 洗牌生成图 -->
+<image class="bg-image" src='{{shufPath}}' style="width:{{clientWidth?clientWidth+'px':'auto'}};height: 100%;position:fixed;top:0;" bindtap="shuffle" hidden="{{!shufMove}}"></image>
 
 <!-- 铺牌 -->
 <scroll-view class='scroll-card' scroll-y style="width:{{clientWidth?clientWidth+'px':'auto'}};" hidden='{{panelKey == "dragPanel" || panelKey == "shuffleCardCanvas"}}'>
