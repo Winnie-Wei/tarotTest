@@ -62,6 +62,13 @@ Page({
       numIndex: e.detail.value
     })
   },
+  onShareAppMessage: function () {
+    return {
+      title: 'test',
+      desc: 'descddddd!',
+      path: '/page/user?id=123'
+    }
+  },
   startDraw: function(){
     // if (this.timeInterval > 0) {
     //   clearInterval(this.timeInterval)

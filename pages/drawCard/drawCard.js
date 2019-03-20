@@ -40,22 +40,24 @@ Page({
     popContent: {
       cancelText: '取消',
       confirmText: '确定',
-      imgUrl: '../../image/pic/next.png',
+      imgUrl: '../../image/pic/tip.png',
       text: "请先抽牌哦~",
       imgClass: ''
     },
     savePicUrl: '',
     popConfirmKey: '',//弹窗key
     popCanvas: false,
+    shufMove: '', //洗牌canvas左移样式
+    shufA: {}
   },
   onReady: function(){
     this.popup = this.selectComponent("#popups");
   },
   onLoad: function(options) {
-    options = {
-      num: 0,
-      type: 0
-    }
+    // options = {
+    //   num: 0,
+    //   type: 0
+    // }
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
@@ -253,9 +255,11 @@ Page({
       panelKey: "shuffleCardCanvas",
       isShuffle: true,
       choseArr: [],
-      showSide: ''
+      showSide: '',
+      shufMove: '',
+      zindexCount:0
     });
-    shuffleCard(this.data.cardType);
+    this.shuffleCard(this.data.cardType);
   },
 
   //洗牌
@@ -268,7 +272,7 @@ Page({
     that.lastTapTime = currentTime
 
     if (currentTime - lastTapTime < 300) {
-      this.shuffleFun()
+      this.shuffleFun();
     }
   },
   deal: function() {
@@ -287,7 +291,9 @@ Page({
   },
   backtoshuff: function(){
     this.setData({
-      panelKey: "shufPanel"
+      panelKey: "shufPanel",
+      showSide: '',
+      shufMove: '',
     });
   },
   confirm: function () {
@@ -304,12 +310,37 @@ Page({
     this.setData({
       panelKey: "dragPanel",
       drawCard: arr,
-      zindexCount: (this.data.dragKey ? zindexCount : this.data.choseArr.length)
+      zindexCount: (this.data.dragKey ? zindexCount : this.data.choseArr.length),
+      showSide: '',
+      shufMove: '',
     });
   },
+  createShufPic: function(){
+    let that = this;
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      width: that.data.clientWidtht,
+      height: that.data.clientHeight,
+      canvasId: 'shuffle',
+      success: function (res) {
+        that.setData({
+          shufPath: res.tempFilePath
+        });
+      },
+      fail: function (res) {
+        console.log(res)
+      }
+    })
+  },
   openSide: function(){
+    // if (this.data.panelKey == "shuffleCardCanvas" && !this.data.showSide){
+    //   this.createShufPic();
+    // }
     this.setData({
-      showSide: !this.data.showSide ? 'show-side' : ''
+      showSide: !this.data.showSide ? 'show-side' : '',
+      //shufA: (this.data.panelKey == "shuffleCardCanvas" && !this.data.showSide) ||　animation.export()
+      shufMove: this.data.panelKey == "shuffleCardCanvas" && !this.data.showSide ? "shuf-move" : ''
     });
   },
   drawSavePic: function () {
@@ -347,7 +378,7 @@ Page({
         popContent: {
         cancelText: '取消',
         confirmText: '确定',
-        imgUrl: '../../image/pic/next.png',
+        imgUrl: '../../image/pic/tip.png',
         text: "请先抽牌哦~",
         imgClass: ''
         },
@@ -372,7 +403,42 @@ Page({
       });
       that.popup.show();
     });
-  }
+  },
+  shuffleCard(cardtype) { //洗牌动画
+    for (var i = 0; i < 78; i++) {
+      var x = 0,
+        y = 0,
+        deg = 0,
+        rx = 0,
+        ry = 0;
+      if (app.globalData.clientWidth < 350) {
+        x = Math.random() * 160 + 50;
+        y = Math.random() * 280 + 15;
+        deg = Math.random() * Math.PI;
+        rx = x + 50;
+        ry = y + 46;
+        ctxs.translate(rx, ry);
+        ctxs.rotate(deg);
+        ctxs.drawImage('../../image/' + cardtype + '/cardback.png', 0, 0, 35, 62);
+        ctxs.rotate(-deg);
+        ctxs.translate(-rx, -ry);
+      } else {
+        x = Math.random() * 190 + 50;
+        y = Math.random() * 350 + 20;
+        deg = Math.random() * Math.PI;
+        rx = x + 50;
+        ry = y + 46;
+        ctxs.translate(rx, ry);
+        ctxs.rotate(deg);
+        ctxs.drawImage('../../image/' + cardtype + '/cardback.png', 25, -46, 45, 80);
+        ctxs.rotate(-deg);
+        ctxs.translate(-rx, -ry);
+      }
+    }
+    ctxs.draw(false, setTimeout(() => {
+      this.createShufPic();
+    }, 500));
+  },
 });
 
 function randomCard(arr, cardtype) { //打乱牌顺序
@@ -401,38 +467,3 @@ function randomCard(arr, cardtype) { //打乱牌顺序
   console.log(arrtemp)
   return arrtemp;
 }
-
-function shuffleCard(cardtype) { //洗牌动画
-  for (var i = 0; i < 78; i++) {
-    var x = 0,
-      y = 0,
-      deg = 0,
-      rx = 0,
-      ry = 0;
-    if (app.globalData.clientWidth < 350) {
-      x = Math.random() * 160 + 50;
-      y = Math.random() * 280 + 15;
-      deg = Math.random() * Math.PI;
-      rx = x + 50;
-      ry = y + 46;
-      ctxs.translate(rx, ry);
-      ctxs.rotate(deg);
-      ctxs.drawImage('../../image/' + cardtype + '/cardback.png', 0, 0, 35, 62);
-      ctxs.rotate(-deg);
-      ctxs.translate(-rx, -ry);
-    } else {
-      x = Math.random() * 190 + 50;
-      y = Math.random() * 350 + 20;
-      deg = Math.random() * Math.PI;
-      rx = x + 50;
-      ry = y + 46;
-      ctxs.translate(rx, ry);
-      ctxs.rotate(deg);
-      ctxs.drawImage('../../image/' + cardtype + '/cardback.png', 25, -46, 45, 80);
-      ctxs.rotate(-deg);
-      ctxs.translate(-rx, -ry);
-    }
-  }
-  ctxs.draw();
-}
-
