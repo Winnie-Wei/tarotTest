@@ -2,6 +2,9 @@ var tarotList = require('../../data/tarotName.js');
 var app = getApp();
 const ctx = wx.createCanvasContext('img');
 const ctxs = wx.createCanvasContext('shuffle');
+const systemInfo = wx.getSystemInfoSync();
+const cpx = systemInfo.screenWidth / 750;
+console.log(cpx)
 Page({
   data: {
     clientWidth: '',
@@ -44,6 +47,9 @@ Page({
       text: "请先抽牌哦~",
       imgClass: ''
     },
+    popDetail:{
+      imgUrl: '../../image/waiteTarot/cardback.png'
+    },
     savePicUrl: '',
     popConfirmKey: '',//弹窗key
     popCanvas: false,
@@ -54,10 +60,10 @@ Page({
     this.popup = this.selectComponent("#popups");
   },
   onLoad: function(options) {
-    // options = {
-    //   num: 0,
-    //   type: 0
-    // }
+    options = {
+      num: 0,
+      type: 0
+    }
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
@@ -349,7 +355,16 @@ Page({
     const ctx = wx.createCanvasContext('savepic');
     ctx.drawImage("../../image/pic/bg.jpg", 0, 0, that.data.clientWidth, that.data.clientHeight);
     for (const item of that.data.drawCard){
-      ctx.drawImage(item.src, item.x,item.y,60,100);
+      console.log(item)
+      let rx = item.position == 1 ? item.x + 140 * cpx : item.x;
+      let ry = item.position == 1 ? item.y + 240 * cpx : item.y;
+      let deg = item.position == 1 ? Math.PI : 0 ;
+      console.log(rx,ry,deg)
+      ctx.translate(rx, ry);
+      ctx.rotate(deg);
+      ctx.drawImage(item.src, 0, 0, 60, 100);
+      ctx.rotate(-deg);
+      ctx.translate(-rx, -ry);
     }
     ctx.draw(false,setTimeout(()=> {
       wx.canvasToTempFilePath({
@@ -403,6 +418,10 @@ Page({
       });
       that.popup.show();
     });
+  },
+  showDetail(e){
+
+    console.log(e)
   },
   shuffleCard(cardtype) { //洗牌动画
     for (var i = 0; i < 78; i++) {

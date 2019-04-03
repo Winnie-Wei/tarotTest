@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "popup": "../../component/popup/popup"
+    "popup": "../../component/popup/popup",
+    "detail": "../../component/showDetail/showDetail"
   },
   "disableScroll": true
 }

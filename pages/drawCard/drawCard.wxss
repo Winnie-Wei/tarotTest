@@ -195,7 +195,7 @@ page{
   width:200rpx;
   position: fixed;
   top:0;
-  right:-100px;
+  right:-200rpx;
   background-color:rgba(255, 255, 255,0.25);
   transition: all 0.5s ease-out;
   z-index:99;
