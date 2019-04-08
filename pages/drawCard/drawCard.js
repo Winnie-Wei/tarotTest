@@ -54,7 +54,7 @@ Page({
     popConfirmKey: '',//弹窗key
     popCanvas: false,
     shufMove: '', //洗牌canvas左移样式
-    shufA: {}
+    downImg: {}
   },
   onReady: function(){
     this.popup = this.selectComponent("#popups");
@@ -238,6 +238,7 @@ Page({
 
   goNext:function(){
     let panel = this.data.panelKey;
+    this.data.downImg = {};
     console.log(panel)
     switch(panel){
       case "shuffleCardCanvas": //洗牌页面
@@ -303,16 +304,19 @@ Page({
     });
   },
   confirm: function () {
-    let arr = [];
+    let arr = [],tPath = '';
     let len = this.data.choseArr.length;
     let zindexCount = this.data.zindexCount;
-    for (const item of this.data.choseArr){
+    for (const item of this.data.choseArr){      
       this.data.shufCard[item].num = item;
       this.data.shufCard[item].zindex = this.data.shufCard[item].drag ? this.data.shufCard[item].zindex : len;
       arr.push(this.data.shufCard[item]);
       len--;
     }
     console.log(arr)
+    for(const i of arr){
+      this.getImageInfoFun(i.src, i.id);
+    }
     this.setData({
       panelKey: "dragPanel",
       drawCard: arr,
@@ -349,24 +353,44 @@ Page({
       shufMove: this.data.panelKey == "shuffleCardCanvas" && !this.data.showSide ? "shuf-move" : ''
     });
   },
-  drawSavePic: function () {
+  getImageInfoFun(path,id){
     let that = this;
+    console.log(path, id)
+    wx.getImageInfo({
+      src: path,
+      success: function (res) {
+        //res.path是网络图片的本地地址
+        let dPath = res.path;
+        that.data.downImg[id] = dPath;
+        that.setData({
+          downImg: that.data.downImg
+        })
+      },
+      fail: function (res) {
+      }
+    });
+  },
+  drawSavePic() {
+    let that = this, tPath = '';
+    
     return new Promise((resolve, reject) => {
     const ctx = wx.createCanvasContext('savepic');
     ctx.drawImage("../../image/pic/bg.jpg", 0, 0, that.data.clientWidth, that.data.clientHeight);
-    for (const item of that.data.drawCard){
+    for(const item of that.data.drawCard){
       console.log(item)
+      console.log(this.data.downImg, this.data.downImg[item.id])
       let rx = item.position == 1 ? item.x + 140 * cpx : item.x;
       let ry = item.position == 1 ? item.y + 240 * cpx : item.y;
       let deg = item.position == 1 ? Math.PI : 0 ;
       console.log(rx,ry,deg)
       ctx.translate(rx, ry);
       ctx.rotate(deg);
-      ctx.drawImage(item.src, 0, 0, 60, 100);
+      ctx.drawImage(this.data.downImg[item.id], 0, 0, 60, 100);
       ctx.rotate(-deg);
       ctx.translate(-rx, -ry);
     }
     ctx.draw(false,setTimeout(()=> {
+      that.popup.show();
       wx.canvasToTempFilePath({
         x: 0,
         y: 0,
@@ -469,7 +493,8 @@ function randomCard(arr, cardtype) { //打乱牌顺序
   }
   var arrtemp = [];
   for (var k = 0; k < larr.length; k++) {
-    var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg"; //app.globalData.clientHeight-110
+    var imgSrc = `http://47.96.68.132/tarto/${cardtype}/${larr[k]}.jpg`;
+   // var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg"; //app.globalData.clientHeight-110
     arrtemp.push({
       "id": larr[k],
       "src": imgSrc,
