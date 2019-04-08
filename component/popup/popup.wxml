@@ -1,0 +1,23 @@
+<block wx:if="{{showModal}}">
+  <view class='modal-mask' catchtouchmove='preventTouchMove'></view> <!-- 遮罩层 -->
+  <view class='modal-dialog' catchtouchmove='preventTouchMove'>
+    <!-- <view class='m-title'>{{title}}</view> -->
+    <view class='m-info'>
+      <block wx:if="{{imgUrl}}">
+        <image src='{{imgUrl}}' class='m-i-img {{imgClass}}'></image>
+      </block>
+      <text class='m-i-text'>
+        {{content}}    
+      </text>
+      <slot name="content"></slot>
+    </view>
+    <view class='modal-footer'>
+      <view class="btn-footer btn-l-footer" bindtap="_onCancel">
+        <text>{{cancelText}}</text>
+      </view>
+      <view class="btn-footer btn-r-footer" bindtap="_onConfirm">
+        <text>{{confirmText}}</text>
+      </view>
+    </view>
+  </view>
+</block>

@@ -1,0 +1,5 @@
+<block  wx:if="{{showMod}}">
+  <view class='modal-mask' catchtouchmove='preventTouchMove'></view> <!-- 遮罩层 -->
+  <image src="{{imgSrc}}" class='big-card'></image>
+  <view class="card-name">{{cardName}}</view>
+</block>
