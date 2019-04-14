@@ -1,0 +1,6 @@
+.help-page{
+  padding: 20rpx;
+}
+.help-img{
+  width: 100%;
+}

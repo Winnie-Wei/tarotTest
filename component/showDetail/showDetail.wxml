@@ -1,5 +1,7 @@
 <block  wx:if="{{showMod}}">
   <view class='modal-mask' catchtouchmove='preventTouchMove'></view> <!-- 遮罩层 -->
-  <image src="{{imgSrc}}" class='big-card'></image>
-  <view class="card-name">{{cardName}}</view>
+  <view class='close-btn' bindtap='close'>x</view>
+  <image src="{{cardInfo.src}}" class='big-card'></image>
+  <view class="text-style card-name">{{cardInfo.name}}</view>
+  <!-- <view class="text-style go-detail" >详细信息 -></view> -->
 </block>

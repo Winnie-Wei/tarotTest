@@ -4,7 +4,6 @@ const ctx = wx.createCanvasContext('img');
 const ctxs = wx.createCanvasContext('shuffle');
 const systemInfo = wx.getSystemInfoSync();
 const cpx = systemInfo.screenWidth / 750;
-console.log(cpx)
 Page({
   data: {
     clientWidth: '',
@@ -22,7 +21,7 @@ Page({
       "s": "22",
       "e": "78"
     }],
-    typeArray: ['waiteTarot', 'newSight'],
+    typeArray: ['waiteTarot'], //'newSight'
     cardType: '', //当前使用的牌种
     shufCard: [],//保存铺牌数组
     choseArr:[],//保存选中数组
@@ -47,9 +46,7 @@ Page({
       text: "请先抽牌哦~",
       imgClass: ''
     },
-    popDetail:{
-      imgUrl: '../../image/waiteTarot/cardback.png'
-    },
+    popDetail:{},
     savePicUrl: '',
     popConfirmKey: '',//弹窗key
     popCanvas: false,
@@ -58,17 +55,18 @@ Page({
   },
   onReady: function(){
     this.popup = this.selectComponent("#popups");
+    this.detail = this.selectComponent("#detail");
   },
   onLoad: function(options) {
-    options = {
-      num: 0,
-      type: 0
-    }
+    // options = {
+    //   num: 0,
+    //   type: 0
+    // }
     this.setData({
       clientHeight: app.globalData.clientHeight,
       clientWidth: app.globalData.clientWidth,
       nameList: tarotList.nameList.slice(this.data.numArray[options.num].s, this.data.numArray[options.num].e),
-      cardType: this.data.typeArray[options.type],
+      cardType: this.data.typeArray[options.type]
     });
   },
   saveImg: function () {
@@ -110,7 +108,6 @@ Page({
     this.popup.hide()
   },
   tapChoose:function(e){
-    console.log(e)
     let arr = this.data.shufCard;
     //++this.data.chosenCount;
     this.data.choseArr.push(e.currentTarget.dataset.index);
@@ -118,7 +115,6 @@ Page({
     arr[eindex].tag = this.data.choseArr.findIndex((value)=>{
       return value == eindex;
     }) + 1;
-    console.log(this.data.shufCard[eindex]);
     this.setData({
       shufCard: arr
     });
@@ -314,9 +310,9 @@ Page({
       len--;
     }
     console.log(arr)
-    for(const i of arr){
-      this.getImageInfoFun(i.src, i.id);
-    }
+    // for(const i of arr){
+    //   this.getImageInfoFun(i.src, i.id);
+    // }
     this.setData({
       panelKey: "dragPanel",
       drawCard: arr,
@@ -377,15 +373,14 @@ Page({
     const ctx = wx.createCanvasContext('savepic');
     ctx.drawImage("../../image/pic/bg.jpg", 0, 0, that.data.clientWidth, that.data.clientHeight);
     for(const item of that.data.drawCard){
-      console.log(item)
-      console.log(this.data.downImg, this.data.downImg[item.id])
+      //console.log(this.data.downImg, this.data.downImg[item.id]) //网络图片
       let rx = item.position == 1 ? item.x + 140 * cpx : item.x;
       let ry = item.position == 1 ? item.y + 240 * cpx : item.y;
       let deg = item.position == 1 ? Math.PI : 0 ;
-      console.log(rx,ry,deg)
       ctx.translate(rx, ry);
       ctx.rotate(deg);
-      ctx.drawImage(this.data.downImg[item.id], 0, 0, 60, 100);
+     // ctx.drawImage(this.data.downImg[item.id], 0, 0, 60, 100); //网络图片
+      ctx.drawImage(item.src, 0, 0, 60, 100);
       ctx.rotate(-deg);
       ctx.translate(-rx, -ry);
     }
@@ -444,8 +439,16 @@ Page({
     });
   },
   showDetail(e){
-
-    console.log(e)
+    let id = e.currentTarget.id;
+    id = id.substring(0, id.lastIndexOf('back'));;
+    let arr = this.data.shufCard;
+    let curCard = arr.find(item => {
+      return item.id == id;
+    });
+    this.setData({
+      popDetail: curCard
+    })
+    this.detail.show();
   },
   shuffleCard(cardtype) { //洗牌动画
     for (var i = 0; i < 78; i++) {
@@ -482,6 +485,11 @@ Page({
       this.createShufPic();
     }, 500));
   },
+  goHelp:function(){
+    wx.navigateTo({
+      url: '../../pages/help/help',
+    })
+  }
 });
 
 function randomCard(arr, cardtype) { //打乱牌顺序
@@ -493,10 +501,11 @@ function randomCard(arr, cardtype) { //打乱牌顺序
   }
   var arrtemp = [];
   for (var k = 0; k < larr.length; k++) {
-    var imgSrc = `http://47.96.68.132/tarto/${cardtype}/${larr[k]}.jpg`;
-   // var imgSrc = "../../image/" + cardtype + "/" + larr[k] + ".jpg"; //app.globalData.clientHeight-110
+    //var imgSrc = `http://47.96.68.132/tarto/${cardtype}/${larr[k]}.jpg`;
+   var imgSrc = "../../image/" + cardtype + "/" + larr[k].id + ".jpg"; //app.globalData.clientHeight-110
     arrtemp.push({
-      "id": larr[k],
+      "id": larr[k].id,
+      "name": larr[k].name,
       "src": imgSrc,
       "tag": 0,
       "position": Math.round(Math.random() * 10) % 2,

@@ -19,13 +19,31 @@
   width:360rpx;
   height:600rpx;
 }
-.card-name{
+.text-style{
   position:absolute;
-  top:140rpx;
   z-index:1001;
   font-size:46rpx;
   color:rgb(241, 241, 241);
   text-align:center;
   width:100%;
-
+}
+ .card-name{
+  top:140rpx;
+ }
+ .go-detail{
+  top:930rpx;
+  font-size:40rpx;
+ }
+.close-btn{
+  position: absolute;
+  top:30rpx;
+  right:26rpx;
+  border-radius: 40rpx;
+  width:80rpx;
+  height:80rpx;
+  background: rgba(207, 207, 207,0.3);
+  text-align: center;
+  line-height: 76rpx;
+  z-index:1001;
+  color: #fff;
 }

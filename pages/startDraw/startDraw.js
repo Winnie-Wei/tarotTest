@@ -1,15 +1,15 @@
 Page({
   data: {
-    typeArray: ['通用伟特塔罗', '新视角伟特塔罗牌'], 
+    typeArray: ['通用伟特塔罗'], //'新视角伟特塔罗牌'
     object_typeArray: [
       {
         id: 0,
         name: '通用伟特塔罗'
       },
-      {
-        id: 1,
-        name: '新视角伟特塔罗牌'
-      }
+      // {
+      //   id: 1,
+      //   name: '新视角伟特塔罗牌'
+      // }
     ],
     typeIndex: 0,
     numArray:["78张牌","大阿尔卡那","小阿尔卡那"],
@@ -64,9 +64,9 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: 'test',
-      desc: 'descddddd!',
-      path: '/page/user?id=123'
+      title: '塔罗Winky小神婆',
+      desc: '塔罗占卜小程序',
+      path: 'pages/startDraw/startDraw'
     }
   },
   startDraw: function(){
@@ -74,6 +74,5 @@ Page({
     //   clearInterval(this.timeInterval)
     //   this.timeInterval = 0
     // }
-
   }
 })

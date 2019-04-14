@@ -11,14 +11,18 @@ Component({
     cardName: {
       type:String,
       value: '权杖皇后'
-    }
+    },
+    cardInfo: {
+      type: Object,
+      value: ''
+    },
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    showMod: true
+    showMod: false
   },
 
   /**
@@ -29,6 +33,11 @@ Component({
       this.setData({
         showMod:true
       })
-    }
+    },
+    close() {
+      this.setData({
+        showMod: false
+      })
+    },
   }
 })

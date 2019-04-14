@@ -1,0 +1,3 @@
+<view class='help-page'>
+  <image class='help-img' src='../../image/pic/help.png' mode="widthFix"></image>
+</view>

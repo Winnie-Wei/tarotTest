@@ -32,7 +32,7 @@
 </movable-area>
 
 <view class='side-view {{showSide}}' style="height:{{clientHeight?clientHeight + 100 +'px':'auto'}};">
-  <view class='side-item'>说明</view>
+  <view class='side-item' bindtap='goHelp'>说明</view>
   <view class='side-item' bindtap='shuffleFun'>洗牌</view>
   <view class='side-item' bindtap='deal'>补牌</view>
   <view class='side-item' bindtap='savePicture'>保存图片</view>
@@ -43,7 +43,7 @@
   <image class="next-btn" src='../../image/pic/next.png' bindtap='goNext' hidden='{{!isShuffle || panelKey == "dragPanel"}}'></image>
 </view>
 
-<!-- <detail id="detail" imgSrc='{{popDetail.imgUrl}}'></detail> -->
+<detail id="detail" cardInfo="{{popDetail}}"></detail>
 <popup 
     id="popups" 
     cancelText="{{popContent.cancelText}}"
